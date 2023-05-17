@@ -16,7 +16,7 @@ char *Ichoices[] = {
     "Flags 3",
     "Flags 4",
     "Flags 5",
-    "Exit",
+    "Back",
     "Save & Exit",
 };
 
@@ -83,8 +83,7 @@ int main()
     mvwprintw(iflags_win, 7, max_x - 18, "ON");
     mvwprintw(iflags_win, 8, max_x - 18, "ON");
     mvwprintw(iflags_win, 9, max_x - 18, "ON");
-    mvwprintw(iflags_win, 10, max_x - 18, "ON");
-    mvwprintw(iflags_win, 11, max_x - 18, "ON");
+    mvwprintw(iflags_win, max_y-5, max_x - 15, "F1 to Exit");
             	
  
  
@@ -129,7 +128,7 @@ int main()
 			    break;
 			case 10:  
 			cur_item = current_item(i_menu);
-			if (strcmp(item_name(cur_item), "Exit") == 0) {
+			if (strcmp(item_name(cur_item), "Back") == 0) {
 				m=1,i=0;
 				mvwprintw(menu_win, 16, max_x , "m = %d, i = %d",m,i);
 				break;
