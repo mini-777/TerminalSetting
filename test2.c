@@ -90,56 +90,56 @@ int main()
     refresh();
 
     /* Loop to capture user input */
-    while ((c = wgetch(my_menu_win)) != KEY_F(1))
+    // while ((c = wgetch(my_menu_win)) != KEY_F(1))
+    // {
+    //     switch (c)
+    //     {
+    //     case KEY_DOWN:
+    //         menu_driver(my_menu, REQ_DOWN_ITEM);
+    //         break;
+    //     case KEY_UP:
+    //         menu_driver(my_menu, REQ_UP_ITEM);
+    //         break;
+    //     case 10: /* Enter key */
+    //     {
+    //         ITEM *cur_item = current_item(my_menu);
+    //         const char *name = item_name(cur_item);
+
+    if (strcmp(item_name, "Toggle Echo") == 0)
     {
-        switch (c)
-        {
-        case KEY_DOWN:
-            menu_driver(my_menu, REQ_DOWN_ITEM);
-            break;
-        case KEY_UP:
-            menu_driver(my_menu, REQ_UP_ITEM);
-            break;
-        case 10: /* Enter key */
-        {
-            ITEM *cur_item = current_item(my_menu);
-            const char *item_name = item_name(cur_item);
-
-            if (strcmp(item_name, "Toggle Echo") == 0)
-            {
-                toggle_echo();
-            }
-            else if (strcmp(item_name, "Canonical Mode") == 0)
-            {
-                set_canonical_mode();
-            }
-            else if (strcmp(item_name, "Non-canonical Mode") == 0)
-            {
-                set_noncanonical_mode();
-            }
-
-            pos_menu_cursor(my_menu);
-            break;
-        }
-        }
-
-        wrefresh(my_menu_win);
+        toggle_echo();
+    }
+    else if (strcmp(item_name, "Canonical Mode") == 0)
+    {
+        set_canonical_mode();
+    }
+    else if (strcmp(item_name, "Non-canonical Mode") == 0)
+    {
+        set_noncanonical_mode();
     }
 
-    /* Free menu items */
-    for (i = 0; i < ARRAY_SIZE(my_items) - 1; ++i)
-    {
-        free_item(my_items[i]);
-    }
+    pos_menu_cursor(my_menu);
+    break;
+}
+}
 
-    /* Free menu */
-    free_menu(my_menu);
+wrefresh(my_menu_win);
+}
 
-    /* Restore original terminal settings */
-    update_terminal_settings(original_settings);
+// /* Free menu items */
+// for (i = 0; i < ARRAY_SIZE(my_items); ++i)
+// {
+//     free_item(my_items[i]);
+// }
 
-    /* End curses mode */
-    endwin();
+/* Free menu */
+free_menu(my_menu);
 
-    return 0;
+/* Restore original terminal settings */
+update_terminal_settings(original_settings);
+
+/* End curses mode */
+endwin();
+
+return 0;
 }
