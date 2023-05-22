@@ -3,6 +3,7 @@
 #include <curses.h>
 #include <menu.h>
 #include <termios.h>
+#include <string.h>
 
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 #define CTRLD 4
@@ -91,13 +92,13 @@ int main() {
             case 10: /* Enter key */
             {
                 ITEM *cur_item = current_item(my_menu);
-                const char *item_name = menu_item_name(cur_item);
+                const char *name = item_name(cur_item);
 
-                if (strcmp(item_name, "Toggle Echo") == 0) {
+                if (strcmp(name, "Toggle Echo") == 0){
                     toggle_echo();
-                } else if (strcmp(item_name, "Canonical Mode") == 0) {
+                } else if (strcmp(name, "Canonical Mode") == 0) {
                     set_canonical_mode();
-                } else if (strcmp(item_name, "Non-canonical Mode") == 0) {
+                } else if (strcmp(name, "Non-canonical Mode") == 0) {
                     set_noncanonical_mode();
                 }
 
