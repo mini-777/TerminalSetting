@@ -18,7 +18,7 @@ char *I_choices[] = {
     "PARMRK",
     "INPCK",
     "Back",
-    "Save & Exit",
+
 };
 char *O_choices[] = {
     "OPOST",
@@ -27,7 +27,7 @@ char *O_choices[] = {
     "OFILL",
     "OCRNL",
     "Back",
-    "Save & Exit",
+
 };
 char *C_choices[] = {
     "HUPCL",
@@ -36,7 +36,7 @@ char *C_choices[] = {
     "CREAD",
     "PARENB",
     "Back",
-    "Save & Exit",
+
 };
 
 void update_terminal_settings(struct termios new_settings)
