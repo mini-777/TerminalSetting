@@ -171,7 +171,7 @@ int main()
                 cur_item = current_item(i_menu);
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
-                    m = 1, i = 0;
+                    m = 0, i = 0;
                     mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
@@ -195,7 +195,7 @@ int main()
                 cur_item = current_item(o_menu);
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
-                    m = 1, i = 0;
+                    m = 0, i = 0;
                     mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
@@ -219,7 +219,7 @@ int main()
                 cur_item = current_item(c_menu);
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
-                    m = 1, i = 0;
+                    m = 0, i = 0;
                     mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
