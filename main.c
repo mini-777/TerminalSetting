@@ -116,11 +116,11 @@ int main()
 
     // 사용자 입력 처리
     int c;
-    int m = 1, i = 0, o = 0, l = 0;
+    int m = 0, i = 0, o = 0, l = 0;
     ITEM *cur_item;
     while (c != KEY_F(1))
     {
-        if (m == 1)
+        if (m == 0 && i == 0)
         {
             post_menu(my_menu);
             touchwin(menu_win);
@@ -136,14 +136,24 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(my_menu);
-                if (strcmp(item_name(cur_item), "Input  Flags") == 0)
+                if (strcmp(item_name(cur_item), "C_Iflags") == 0)
                 {
                     m = 0, i = 1;
                     break;
                 }
+                else if (strcmp(item_name(cur_item), "C_Oflags") == 0)
+                {
+                    m = 0, i = 2;
+                    break;
+                }
+                else if (strcmp(item_name(cur_item), "C_Cflags") == 0)
+                {
+                    m = 0, i = 3;
+                    break;
+                }
             }
         }
-        if (m == 0 && i == 1)
+        else if (m == 0 && i == 1)
         {
             post_menu(i_menu);
             touchwin(iflags_win);
@@ -159,6 +169,54 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(i_menu);
+                if (strcmp(item_name(cur_item), "Back") == 0)
+                {
+                    m = 1, i = 0;
+                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
+                    break;
+                }
+            }
+        }
+        else if (m == 0 && i == 2)
+        {
+            post_menu(o_menu);
+            touchwin(iflags_win);
+            wrefresh(iflags_win);
+            c = wgetch(iflags_win);
+            switch (c)
+            {
+            case KEY_DOWN:
+                menu_driver(o_menu, REQ_DOWN_ITEM);
+                break;
+            case KEY_UP:
+                menu_driver(o_menu, REQ_UP_ITEM);
+                break;
+            case 10:
+                cur_item = current_item(o_menu);
+                if (strcmp(item_name(cur_item), "Back") == 0)
+                {
+                    m = 1, i = 0;
+                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
+                    break;
+                }
+            }
+        }
+        else if (m == 0 && i == 3)
+        {
+            post_menu(c_menu);
+            touchwin(iflags_win);
+            wrefresh(iflags_win);
+            c = wgetch(iflags_win);
+            switch (c)
+            {
+            case KEY_DOWN:
+                menu_driver(c_menu, REQ_DOWN_ITEM);
+                break;
+            case KEY_UP:
+                menu_driver(c_menu, REQ_UP_ITEM);
+                break;
+            case 10:
+                cur_item = current_item(c_menu);
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 1, i = 0;
