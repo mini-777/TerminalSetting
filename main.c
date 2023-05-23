@@ -38,7 +38,10 @@ char *C_choices[] = {
     "Back",
     "Save & Exit",
 };
-
+void update_terminal_settings(struct termios new_settings)
+{
+    tcsetattr(fileno(stdin), TCSANOW, &new_settings);
+}
 MENU *create_menu(char **choices, int n_choices)
 {
     ITEM **my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
@@ -56,7 +59,6 @@ int main()
     struct termios new_settings;
     tcgetattr(0, &old_settings);
     new_settings = old_settings;
-
     initscr();
     cbreak();
     noecho();
@@ -105,14 +107,28 @@ int main()
     set_menu_fore(i_menu, COLOR_PAIR(2));
     set_menu_back(i_menu, COLOR_PAIR(1));
     box(iflags_win, 0, 0);
-    mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags");
-    mvwprintw(iflags_win, 5, max_x - 18, "ON");
-    mvwprintw(iflags_win, 6, max_x - 18, "ON");
-    mvwprintw(iflags_win, 7, max_x - 18, "ON");
-    mvwprintw(iflags_win, 8, max_x - 18, "ON");
-    mvwprintw(iflags_win, 9, max_x - 18, "ON");
-    mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    if (old_settings.c_iflag & IGNBRK)
+    {
+        mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+        mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags IGNBRK ON!");
+        mvwprintw(iflags_win, 5, max_x - 18, "ON");
+        mvwprintw(iflags_win, 6, max_x - 18, "ON");
+        mvwprintw(iflags_win, 7, max_x - 18, "ON");
+        mvwprintw(iflags_win, 8, max_x - 18, "ON");
+        mvwprintw(iflags_win, 9, max_x - 18, "ON");
+        mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    }
+    else
+    {
+        mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+        mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags IGNBRK OFF!");
+        mvwprintw(iflags_win, 5, max_x - 18, "ON");
+        mvwprintw(iflags_win, 6, max_x - 18, "ON");
+        mvwprintw(iflags_win, 7, max_x - 18, "ON");
+        mvwprintw(iflags_win, 8, max_x - 18, "ON");
+        mvwprintw(iflags_win, 9, max_x - 18, "ON");
+        mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    }
 
     // 사용자 입력 처리
     int c;
