@@ -38,27 +38,27 @@ char *C_choices[] = {
     "Back",
     "Save & Exit",
 };
-int i_setting[] = {
-    IGNBRK,
-    BRKINT,
-    IGNPAR,
-    PARMRK,
-    INPCK,
-};
-int o_setting[] = {
-    OPOST,
-    ONLCR,
-    OXTABS,
-    ONOEOT,
-    OCRNL,
-};
-int c_setting[] = {
-    CIGNORE,
-    CSIZE,
-    CSTOPB,
-    CREAD,
-    PARENB,
-};
+// int i_setting[] = {
+//     IGNBRK,
+//     BRKINT,
+//     IGNPAR,
+//     PARMRK,
+//     INPCK,
+// };
+// int o_setting[] = {
+//     OPOST,
+//     ONLCR,
+//     OXTABS,
+//     ONOEOT,
+//     OCRNL,
+// };
+// int c_setting[] = {
+//     CIGNORE,
+//     CSIZE,
+//     CSTOPB,
+//     CREAD,
+//     PARENB,
+// };
 void update_terminal_settings(struct termios new_settings)
 {
     tcsetattr(fileno(stdin), TCSANOW, &new_settings);
