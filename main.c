@@ -168,10 +168,10 @@ int main()
     mvwprintw(cflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     // 사용자 입력 처리
-    int c;
+    int c = 0;
     int m = 0, i = 0, o = 0, l = 0;
     ITEM *cur_item;
-    while (c != KEY_F(1))
+    while (c != KEY_F(1) && c == 0)
     {
         if (m == 0 && i == 0)
         {
@@ -207,9 +207,7 @@ int main()
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
                     update_terminal_settings(new_settings);
-                    unpost_menu(my_menu);
-                    free_menu(my_menu);
-                    endwin();
+                    c = 1;
                     break;
                 }
             }
