@@ -38,6 +38,27 @@ char *C_choices[] = {
     "Back",
     "Save & Exit",
 };
+int i_setting[] = {
+    IGNBRK,
+    BRKINT,
+    IGNPAR,
+    PARMRK,
+    INPCK,
+};
+int o_setting[] = {
+    OPOST,
+    ONLCR,
+    OXTABS,
+    ONOEOT,
+    OCRNL,
+};
+int c_setting[] = {
+    CIGNORE,
+    CSIZE,
+    CSTOPB,
+    CREAD,
+    PARENB,
+};
 void update_terminal_settings(struct termios new_settings)
 {
     tcsetattr(fileno(stdin), TCSANOW, &new_settings);
@@ -59,6 +80,13 @@ int main()
     struct termios new_settings;
     tcgetattr(0, &old_settings);
     new_settings = old_settings;
+    int c_iflag_toogle[5], c_oflag_toogle[5], c_cflag_toogle[5];
+    for (int i = 0; i < 5; i++)
+    {
+        c_iflag_toogle[i] = old_settings.c_iflag & i_setting[i];
+        c_oflag_toogle[i] = old_settings.c_oflag & o_setting[i];
+        c_cflag_toogle[i] = old_settings.c_cflag & c_setting[i];
+    }
     initscr();
     cbreak();
     noecho();
