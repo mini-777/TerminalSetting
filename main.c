@@ -111,7 +111,7 @@ int main()
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
-    // 메뉴 출력
+    // 메뉴 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
     set_menu_sub(my_menu, sub_win);
@@ -123,7 +123,7 @@ int main()
     box(menu_win, 0, 0);
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
-
+    // Iflag
     WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *isub_win = derwin(iflags_win, 8, 20, 5, 13);
     keypad(iflags_win, TRUE);
@@ -135,6 +135,36 @@ int main()
     set_menu_fore(i_menu, COLOR_PAIR(2));
     set_menu_back(i_menu, COLOR_PAIR(1));
     box(iflags_win, 0, 0);
+
+    mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+    mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    // Oflag
+    WINDOW *oflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
+    WINDOW *osub_win = derwin(oflags_win, 8, 20, 5, 13);
+    keypad(oflags_win, TRUE);
+    set_menu_win(o_menu, oflags_win);
+    set_menu_sub(o_menu, osub_win);
+
+    wbkgd(stdscr, COLOR_PAIR(1));
+    wbkgd(oflags_win, COLOR_PAIR(1));
+    set_menu_fore(o_menu, COLOR_PAIR(2));
+    set_menu_back(o_menu, COLOR_PAIR(1));
+    box(oflags_win, 0, 0);
+
+    mvwprintw(oflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+    mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    // Cflag
+    WINDOW *cflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
+    WINDOW *csub_win = derwin(cflags_win, 8, 20, 5, 13);
+    keypad(cflags_win, TRUE);
+    set_menu_win(c_menu, cflags_win);
+    set_menu_sub(c_menu, csub_win);
+
+    wbkgd(stdscr, COLOR_PAIR(1));
+    wbkgd(cflags_win, COLOR_PAIR(1));
+    set_menu_fore(c_menu, COLOR_PAIR(2));
+    set_menu_back(c_menu, COLOR_PAIR(1));
+    box(cflags_win, 0, 0);
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
@@ -261,9 +291,10 @@ int main()
         else if (m == 0 && i == 2)
         {
             post_menu(o_menu);
-            touchwin(iflags_win);
-            wrefresh(iflags_win);
-            c = wgetch(iflags_win);
+            touchwin(oflags_win);
+            wrefresh(oflags_win);
+            c = wgetch(oflags_win);
+
             switch (c)
             {
             case KEY_DOWN:
@@ -285,9 +316,9 @@ int main()
         else if (m == 0 && i == 3)
         {
             post_menu(c_menu);
-            touchwin(iflags_win);
-            wrefresh(iflags_win);
-            c = wgetch(iflags_win);
+            touchwin(cflags_win);
+            wrefresh(cflags_win);
+            c = wgetch(cflags_win);
             switch (c)
             {
             case KEY_DOWN:
