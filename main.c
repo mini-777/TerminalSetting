@@ -210,6 +210,46 @@ int main()
                     mvwprintw(iflags_win, 5, max_x - 18, "ON ");
                     new_settings.c_iflag |= IGNBRK;
                 }
+                if (strcmp(item_name(cur_item), "BRKINT") == 0 && (new_settings.c_iflag & BRKINT))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    new_settings.c_iflag &= ~BRKINT;
+                }
+                else if (strcmp(item_name(cur_item), "BRKINT") == 0 && !(new_settings.c_iflag & BRKINT))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    new_settings.c_iflag |= BRKINT;
+                }
+                if (strcmp(item_name(cur_item), "IGNPAR") == 0 && (new_settings.c_iflag & IGNPAR))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    new_settings.c_iflag &= ~IGNPAR;
+                }
+                else if (strcmp(item_name(cur_item), "IGNPAR") == 0 && !(new_settings.c_iflag & IGNPAR))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    new_settings.c_iflag |= IGNPAR;
+                }
+                if (strcmp(item_name(cur_item), "PARMRK") == 0 && (new_settings.c_iflag & PARMRK))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    new_settings.c_iflag &= ~PARMRK;
+                }
+                else if (strcmp(item_name(cur_item), "PARMRK") == 0 && !(new_settings.c_iflag & PARMRK))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    new_settings.c_iflag |= PARMRK;
+                }
+                if (strcmp(item_name(cur_item), "INPCK") == 0 && (new_settings.c_iflag & INPCK))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    new_settings.c_iflag &= ~INPCK;
+                }
+                else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(new_settings.c_iflag & INPCK))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    new_settings.c_iflag |= INPCK;
+                }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
