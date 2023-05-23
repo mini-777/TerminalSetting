@@ -207,7 +207,7 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(new_settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 5, max_x - 18, "ON");
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
                     new_settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
