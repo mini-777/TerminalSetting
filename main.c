@@ -207,7 +207,7 @@ int main()
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
                     update_terminal_settings(new_settings);
-                    exit(0);
+                    endwin();
                     break;
                 }
             }
