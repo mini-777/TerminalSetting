@@ -138,11 +138,11 @@ int main()
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
-    mvwprintw(iflags_win, 5, max_x - 18, (old_settings.c_iflag & IGNBRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 6, max_x - 18, (old_settings.c_iflag & BRKINT) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 7, max_x - 18, (old_settings.c_iflag & IGNPAR) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 8, max_x - 18, (old_settings.c_iflag & PARMRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 9, max_x - 18, (old_settings.c_iflag & INPCK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 5, max_x - 18, (new_settings.c_iflag & IGNBRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 6, max_x - 18, (new_settings.c_iflag & BRKINT) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 7, max_x - 18, (new_settings.c_iflag & IGNPAR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 8, max_x - 18, (new_settings.c_iflag & PARMRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 9, max_x - 18, (new_settings.c_iflag & INPCK) ? "ON" : "OFF");
     mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     // 사용자 입력 처리
@@ -200,9 +200,15 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(i_menu);
-                if (strcmp(item_name(cur_item), "IGNBRK") == 0)
+                if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (new_settings.c_iflag & IGNBRK))
                 {
                     mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    new_settings.c_iflag &= ~IGNBRK;
+                }
+                else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(new_settings.c_iflag & IGNBRK))
+                {
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON");
+                    new_settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
