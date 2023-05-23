@@ -41,7 +41,7 @@ char *C_choices[] = {
 
 void update_terminal_settings(struct termios new_settings)
 {
-    tcsetattr(fileno(stdin), TCSANOW, &new_settings);
+    tcsetattr(0, TCSANOW, &new_settings);
 }
 MENU *create_menu(char **choices, int n_choices)
 {
@@ -202,6 +202,12 @@ int main()
                 else if (strcmp(item_name(cur_item), "C_Cflags") == 0)
                 {
                     m = 0, i = 3;
+                    break;
+                }
+                else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
+                {
+                    update_terminal_settings(new_settings);
+                    exit(0);
                     break;
                 }
             }
