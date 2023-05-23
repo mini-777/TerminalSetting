@@ -81,12 +81,12 @@ int main()
     tcgetattr(0, &old_settings);
     new_settings = old_settings;
     int c_iflag_toogle[5], c_oflag_toogle[5], c_cflag_toogle[5];
-    for (int i = 0; i < 5; i++)
-    {
-        c_iflag_toogle[i] = old_settings.c_iflag & i_setting[i];
-        c_oflag_toogle[i] = old_settings.c_oflag & o_setting[i];
-        c_cflag_toogle[i] = old_settings.c_cflag & c_setting[i];
-    }
+    // for (int i = 0; i < 5; i++)
+    // {
+    //     c_iflag_toogle[i] = old_settings.c_iflag & i_setting[i];
+    //     c_oflag_toogle[i] = old_settings.c_oflag & o_setting[i];
+    //     c_cflag_toogle[i] = old_settings.c_cflag & c_setting[i];
+    // }
     initscr();
     cbreak();
     noecho();
