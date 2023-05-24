@@ -419,7 +419,8 @@ int main()
 
     unpost_menu(my_menu);
     free_menu(my_menu);
-    tcsetattr(0, TCSANOW, &settings);
     endwin();
+    tcsetattr(0, TCSANOW, &settings);
+
     return 0;
 }
