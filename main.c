@@ -188,7 +188,8 @@ int main()
 
                     l = 1;
                 }
-            }
+                break;
+                        }
         }
         else if (m == 0 && i == 1)
         {
@@ -261,6 +262,7 @@ int main()
                     m = 0, i = 0;
                     break;
                 }
+                break;
             }
         }
         else if (m == 0 && i == 2)
@@ -335,6 +337,7 @@ int main()
                     m = 0, i = 0;
                     break;
                 }
+                break;
             }
         }
         else if (m == 0 && i == 3)
@@ -408,13 +411,17 @@ int main()
                     m = 0, i = 0;
                     break;
                 }
+                break;
             }
         }
     }
     // 초기화
+    if (l == 1)
+    {
+        tcsetattr(0, TCSANOW, &settings);
+    }
 
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
-    tcsetattr(0, TCSANOW, &settings);
 }
