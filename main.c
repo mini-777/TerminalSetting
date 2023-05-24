@@ -68,8 +68,6 @@ void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
 
 int main()
 {
-    struct termios settings;
-    tcgetattr(0, &settings);
 
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
@@ -117,6 +115,9 @@ int main()
     create_window(iflags_win, i_menu, max_y, max_x);
     create_window(oflags_win, o_menu, max_y, max_x);
     create_window(cflags_win, c_menu, max_y, max_x);
+
+    struct termios settings;
+    tcgetattr(0, &settings);
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
@@ -186,7 +187,7 @@ int main()
                 {
                     tcsetattr(0, TCSANOW, &settings);
 
-                    l = 1;
+                    return 0;
                 }
             }
         }
