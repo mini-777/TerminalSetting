@@ -3,6 +3,7 @@
 #include <menu.h>
 #include <string.h>
 #include <termios.h>
+#include <signal.h>
 
 char *choices[] = {
     "C_Iflags",
@@ -60,6 +61,9 @@ int main()
     struct termios new_settings;
     tcgetattr(0, &old_settings);
     new_settings = old_settings;
+    
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
 
     initscr();
     cbreak();
@@ -85,7 +89,7 @@ int main()
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
-    // 메뉴 구성
+    // 윈도우 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
     set_menu_sub(my_menu, sub_win);
@@ -159,7 +163,7 @@ int main()
     mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     mvwprintw(cflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(cflags_win, 2, max_x / 2 - 8, "Control  Flags!");
+    mvwprintw(cflags_win, 2, max_x / 2 - 9, "Control  Flags!");
     mvwprintw(cflags_win, 5, max_x - 18, (new_settings.c_iflag & HUPCL) ? "ON" : "OFF");
     mvwprintw(cflags_win, 6, max_x - 18, (new_settings.c_iflag & CLOCAL) ? "ON" : "OFF");
     mvwprintw(cflags_win, 7, max_x - 18, (new_settings.c_iflag & CSTOPB) ? "ON" : "OFF");
@@ -281,7 +285,6 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
-                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
             }
@@ -356,7 +359,6 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
-                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
             }
@@ -430,7 +432,6 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
-                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
                     break;
                 }
             }
