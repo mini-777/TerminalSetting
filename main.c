@@ -53,7 +53,21 @@ MENU *create_menu(char **choices, int n_choices)
     MENU *my_menu = new_menu((ITEM **)my_items);
     return my_menu;
 }
+void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x) {
+    WINDOW *sub_win = derwin(flags_win, 8, 20, 5, 13);
+    keypad(flags_win, TRUE);
+    set_menu_win(menu, flags_win);
+    set_menu_sub(menu, sub_win);
 
+    wbkgd(stdscr, COLOR_PAIR(1));
+    wbkgd(flags_win, COLOR_PAIR(1));
+    set_menu_fore(menu, COLOR_PAIR(2));
+    set_menu_back(menu, COLOR_PAIR(1));
+    box(flags_win, 0, 0);
+
+    mvwprintw(flags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+    mvwprintw(flags_win, max_y - 5, max_x - 15, "F1 to Exit");
+}
 struct termios old_settings;
 
 int main()
@@ -101,49 +115,14 @@ int main()
     box(menu_win, 0, 0);
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
-    // Iflag
-    WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *isub_win = derwin(iflags_win, 8, 20, 5, 13);
-    keypad(iflags_win, TRUE);
-    set_menu_win(i_menu, iflags_win);
-    set_menu_sub(i_menu, isub_win);
-
-    wbkgd(stdscr, COLOR_PAIR(1));
-    wbkgd(iflags_win, COLOR_PAIR(1));
-    set_menu_fore(i_menu, COLOR_PAIR(2));
-    set_menu_back(i_menu, COLOR_PAIR(1));
-    box(iflags_win, 0, 0);
-
-    mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
-    // Oflag
-    WINDOW *oflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *osub_win = derwin(oflags_win, 8, 20, 5, 13);
-    keypad(oflags_win, TRUE);
-    set_menu_win(o_menu, oflags_win);
-    set_menu_sub(o_menu, osub_win);
-
-    wbkgd(stdscr, COLOR_PAIR(1));
-    wbkgd(oflags_win, COLOR_PAIR(1));
-    set_menu_fore(o_menu, COLOR_PAIR(2));
-    set_menu_back(o_menu, COLOR_PAIR(1));
-    box(oflags_win, 0, 0);
-
-    mvwprintw(oflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
-    // Cflag
-    WINDOW *cflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *csub_win = derwin(cflags_win, 8, 20, 5, 13);
-    keypad(cflags_win, TRUE);
-    set_menu_win(c_menu, cflags_win);
-    set_menu_sub(c_menu, csub_win);
-
-    wbkgd(stdscr, COLOR_PAIR(1));
-    wbkgd(cflags_win, COLOR_PAIR(1));
-    set_menu_fore(c_menu, COLOR_PAIR(2));
-    set_menu_back(c_menu, COLOR_PAIR(1));
-    box(cflags_win, 0, 0);
-
+    
+    WINDOW *iflags_win = newwin(max_y -4, max_x -4, 1, 1);
+    WINDOW *oflags_win = newwin(max_y -4, max_x -4, 1, 1);
+    WINDOW *cflags_win = newwin(max_y -4, max_x -4, 1, 1);
+    create_window(iflags_win, i_menu, max_y, max_x);
+    create_window(oflags_win, o_menu, max_y, max_x);
+    create_window(cflags_win, c_menu, max_y, max_x);
+ 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
     mvwprintw(iflags_win, 5, max_x - 18, (new_settings.c_iflag & IGNBRK) ? "ON" : "OFF");
