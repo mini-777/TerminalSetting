@@ -189,7 +189,7 @@ int main()
                     l = 1;
                 }
                 break;
-                        }
+            }
         }
         else if (m == 0 && i == 1)
         {
@@ -416,10 +416,7 @@ int main()
         }
     }
     // 초기화
-    if (l == 1)
-    {
-        tcsetattr(0, TCSANOW, &settings);
-    }
+    tcsetattr(0, TCSANOW, &settings);
 
     unpost_menu(my_menu);
     free_menu(my_menu);
