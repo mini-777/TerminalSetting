@@ -187,7 +187,7 @@ int main()
                 {
                     tcsetattr(0, TCSANOW, &settings);
 
-                    return 0;
+                    l = 1;
                 }
             }
         }
