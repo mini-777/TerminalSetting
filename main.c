@@ -185,7 +185,6 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
-                    tcsetattr(0, TCSANOW, &settings);
 
                     l = 1;
                 }
@@ -413,7 +412,9 @@ int main()
         }
     }
     // 초기화
+
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
+    tcsetattr(0, TCSANOW, &settings);
 }
