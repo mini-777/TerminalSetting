@@ -65,13 +65,11 @@ void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
     mvwprintw(flags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(flags_win, max_y - 5, max_x - 15, "F1 to Exit");
 }
-struct termios old_settings;
 
 int main()
 {
-    struct termios new_settings;
-    tcgetattr(0, &old_settings);
-    new_settings = old_settings;
+    struct termios settings;
+    tcgetattr(0, &settings);
 
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
@@ -122,29 +120,29 @@ int main()
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
-    mvwprintw(iflags_win, 5, max_x - 18, (new_settings.c_iflag & IGNBRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 6, max_x - 18, (new_settings.c_iflag & BRKINT) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 7, max_x - 18, (new_settings.c_iflag & IGNPAR) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 8, max_x - 18, (new_settings.c_iflag & PARMRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 9, max_x - 18, (new_settings.c_iflag & INPCK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 5, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 6, max_x - 18, (settings.c_iflag & BRKINT) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 9, max_x - 18, (settings.c_iflag & INPCK) ? "ON" : "OFF");
     mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     mvwprintw(oflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(oflags_win, 2, max_x / 2 - 8, "Output  Flags!");
-    mvwprintw(oflags_win, 5, max_x - 18, (new_settings.c_iflag & OPOST) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 6, max_x - 18, (new_settings.c_iflag & ONLCR) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 7, max_x - 18, (new_settings.c_iflag & ONOCR) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 8, max_x - 18, (new_settings.c_iflag & OFILL) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 9, max_x - 18, (new_settings.c_iflag & OCRNL) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 5, max_x - 18, (settings.c_iflag & OPOST) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 6, max_x - 18, (settings.c_iflag & ONLCR) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 7, max_x - 18, (settings.c_iflag & ONOCR) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 8, max_x - 18, (settings.c_iflag & OFILL) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 9, max_x - 18, (settings.c_iflag & OCRNL) ? "ON" : "OFF");
     mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     mvwprintw(cflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(cflags_win, 2, max_x / 2 - 9, "Control  Flags!");
-    mvwprintw(cflags_win, 5, max_x - 18, (new_settings.c_iflag & HUPCL) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 6, max_x - 18, (new_settings.c_iflag & CLOCAL) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 7, max_x - 18, (new_settings.c_iflag & CSTOPB) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 8, max_x - 18, (new_settings.c_iflag & CREAD) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 9, max_x - 18, (new_settings.c_iflag & PARENB) ? "ON" : "OFF");
+    mvwprintw(cflags_win, 5, max_x - 18, (settings.c_iflag & HUPCL) ? "ON" : "OFF");
+    mvwprintw(cflags_win, 6, max_x - 18, (settings.c_iflag & CLOCAL) ? "ON" : "OFF");
+    mvwprintw(cflags_win, 7, max_x - 18, (settings.c_iflag & CSTOPB) ? "ON" : "OFF");
+    mvwprintw(cflags_win, 8, max_x - 18, (settings.c_iflag & CREAD) ? "ON" : "OFF");
+    mvwprintw(cflags_win, 9, max_x - 18, (settings.c_iflag & PARENB) ? "ON" : "OFF");
     mvwprintw(cflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     // 사용자 입력 처리
@@ -186,7 +184,7 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
-                    tcsetattr(0, TCSANOW, &new_settings);
+                    tcsetattr(0, TCSANOW, &settings);
 
                     l = 1;
                 }
@@ -208,55 +206,55 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(i_menu);
-                if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (new_settings.c_iflag & IGNBRK))
+                if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (settings.c_iflag & IGNBRK))
                 {
                     mvwprintw(iflags_win, 5, max_x - 18, "OFF");
-                    new_settings.c_iflag &= ~IGNBRK;
+                    settings.c_iflag &= ~IGNBRK;
                 }
-                else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(new_settings.c_iflag & IGNBRK))
+                else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(settings.c_iflag & IGNBRK))
                 {
                     mvwprintw(iflags_win, 5, max_x - 18, "ON ");
-                    new_settings.c_iflag |= IGNBRK;
+                    settings.c_iflag |= IGNBRK;
                 }
-                if (strcmp(item_name(cur_item), "BRKINT") == 0 && (new_settings.c_iflag & BRKINT))
+                if (strcmp(item_name(cur_item), "BRKINT") == 0 && (settings.c_iflag & BRKINT))
                 {
                     mvwprintw(iflags_win, 6, max_x - 18, "OFF");
-                    new_settings.c_iflag &= ~BRKINT;
+                    settings.c_iflag &= ~BRKINT;
                 }
-                else if (strcmp(item_name(cur_item), "BRKINT") == 0 && !(new_settings.c_iflag & BRKINT))
+                else if (strcmp(item_name(cur_item), "BRKINT") == 0 && !(settings.c_iflag & BRKINT))
                 {
                     mvwprintw(iflags_win, 6, max_x - 18, "ON ");
-                    new_settings.c_iflag |= BRKINT;
+                    settings.c_iflag |= BRKINT;
                 }
-                if (strcmp(item_name(cur_item), "IGNPAR") == 0 && (new_settings.c_iflag & IGNPAR))
+                if (strcmp(item_name(cur_item), "IGNPAR") == 0 && (settings.c_iflag & IGNPAR))
                 {
                     mvwprintw(iflags_win, 7, max_x - 18, "OFF");
-                    new_settings.c_iflag &= ~IGNPAR;
+                    settings.c_iflag &= ~IGNPAR;
                 }
-                else if (strcmp(item_name(cur_item), "IGNPAR") == 0 && !(new_settings.c_iflag & IGNPAR))
+                else if (strcmp(item_name(cur_item), "IGNPAR") == 0 && !(settings.c_iflag & IGNPAR))
                 {
                     mvwprintw(iflags_win, 7, max_x - 18, "ON ");
-                    new_settings.c_iflag |= IGNPAR;
+                    settings.c_iflag |= IGNPAR;
                 }
-                if (strcmp(item_name(cur_item), "PARMRK") == 0 && (new_settings.c_iflag & PARMRK))
+                if (strcmp(item_name(cur_item), "PARMRK") == 0 && (settings.c_iflag & PARMRK))
                 {
                     mvwprintw(iflags_win, 8, max_x - 18, "OFF");
-                    new_settings.c_iflag &= ~PARMRK;
+                    settings.c_iflag &= ~PARMRK;
                 }
-                else if (strcmp(item_name(cur_item), "PARMRK") == 0 && !(new_settings.c_iflag & PARMRK))
+                else if (strcmp(item_name(cur_item), "PARMRK") == 0 && !(settings.c_iflag & PARMRK))
                 {
                     mvwprintw(iflags_win, 8, max_x - 18, "ON ");
-                    new_settings.c_iflag |= PARMRK;
+                    settings.c_iflag |= PARMRK;
                 }
-                if (strcmp(item_name(cur_item), "INPCK") == 0 && (new_settings.c_iflag & INPCK))
+                if (strcmp(item_name(cur_item), "INPCK") == 0 && (settings.c_iflag & INPCK))
                 {
                     mvwprintw(iflags_win, 9, max_x - 18, "OFF");
-                    new_settings.c_iflag &= ~INPCK;
+                    settings.c_iflag &= ~INPCK;
                 }
-                else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(new_settings.c_iflag & INPCK))
+                else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(settings.c_iflag & INPCK))
                 {
                     mvwprintw(iflags_win, 9, max_x - 18, "ON ");
-                    new_settings.c_iflag |= INPCK;
+                    settings.c_iflag |= INPCK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
@@ -282,55 +280,55 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(o_menu);
-                if (strcmp(item_name(cur_item), "OPOST") == 0 && (new_settings.c_oflag & OPOST))
+                if (strcmp(item_name(cur_item), "OPOST") == 0 && (settings.c_oflag & OPOST))
                 {
                     mvwprintw(oflags_win, 5, max_x - 18, "OFF");
-                    new_settings.c_oflag &= ~OPOST;
+                    settings.c_oflag &= ~OPOST;
                 }
-                else if (strcmp(item_name(cur_item), "OPOST") == 0 && !(new_settings.c_oflag & OPOST))
+                else if (strcmp(item_name(cur_item), "OPOST") == 0 && !(settings.c_oflag & OPOST))
                 {
                     mvwprintw(oflags_win, 5, max_x - 18, "ON ");
-                    new_settings.c_oflag |= OPOST;
+                    settings.c_oflag |= OPOST;
                 }
-                if (strcmp(item_name(cur_item), "ONLCR") == 0 && (new_settings.c_oflag & ONLCR))
+                if (strcmp(item_name(cur_item), "ONLCR") == 0 && (settings.c_oflag & ONLCR))
                 {
                     mvwprintw(oflags_win, 6, max_x - 18, "OFF");
-                    new_settings.c_oflag &= ~ONLCR;
+                    settings.c_oflag &= ~ONLCR;
                 }
-                else if (strcmp(item_name(cur_item), "ONLCR") == 0 && !(new_settings.c_oflag & ONLCR))
+                else if (strcmp(item_name(cur_item), "ONLCR") == 0 && !(settings.c_oflag & ONLCR))
                 {
                     mvwprintw(oflags_win, 6, max_x - 18, "ON ");
-                    new_settings.c_oflag |= ONLCR;
+                    settings.c_oflag |= ONLCR;
                 }
-                if (strcmp(item_name(cur_item), "ONOCR") == 0 && (new_settings.c_oflag & ONOCR))
+                if (strcmp(item_name(cur_item), "ONOCR") == 0 && (settings.c_oflag & ONOCR))
                 {
                     mvwprintw(oflags_win, 7, max_x - 18, "OFF");
-                    new_settings.c_oflag &= ~ONOCR;
+                    settings.c_oflag &= ~ONOCR;
                 }
-                else if (strcmp(item_name(cur_item), "ONOCR") == 0 && !(new_settings.c_oflag & ONOCR))
+                else if (strcmp(item_name(cur_item), "ONOCR") == 0 && !(settings.c_oflag & ONOCR))
                 {
                     mvwprintw(oflags_win, 7, max_x - 18, "ON ");
-                    new_settings.c_oflag |= ONOCR;
+                    settings.c_oflag |= ONOCR;
                 }
-                if (strcmp(item_name(cur_item), "OFILL") == 0 && (new_settings.c_oflag & OFILL))
+                if (strcmp(item_name(cur_item), "OFILL") == 0 && (settings.c_oflag & OFILL))
                 {
                     mvwprintw(oflags_win, 8, max_x - 18, "OFF");
-                    new_settings.c_oflag &= ~OFILL;
+                    settings.c_oflag &= ~OFILL;
                 }
-                else if (strcmp(item_name(cur_item), "OFILL") == 0 && !(new_settings.c_oflag & OFILL))
+                else if (strcmp(item_name(cur_item), "OFILL") == 0 && !(settings.c_oflag & OFILL))
                 {
                     mvwprintw(oflags_win, 8, max_x - 18, "ON ");
-                    new_settings.c_oflag |= OFILL;
+                    settings.c_oflag |= OFILL;
                 }
-                if (strcmp(item_name(cur_item), "OCRNL") == 0 && (new_settings.c_oflag & OCRNL))
+                if (strcmp(item_name(cur_item), "OCRNL") == 0 && (settings.c_oflag & OCRNL))
                 {
                     mvwprintw(oflags_win, 9, max_x - 18, "OFF");
-                    new_settings.c_oflag &= ~OCRNL;
+                    settings.c_oflag &= ~OCRNL;
                 }
-                else if (strcmp(item_name(cur_item), "OCRNL") == 0 && !(new_settings.c_oflag & OCRNL))
+                else if (strcmp(item_name(cur_item), "OCRNL") == 0 && !(settings.c_oflag & OCRNL))
                 {
                     mvwprintw(oflags_win, 9, max_x - 18, "ON ");
-                    new_settings.c_oflag |= OCRNL;
+                    settings.c_oflag |= OCRNL;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
@@ -355,55 +353,55 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(c_menu);
-                if (strcmp(item_name(cur_item), "HUPCL") == 0 && (new_settings.c_cflag & HUPCL))
+                if (strcmp(item_name(cur_item), "HUPCL") == 0 && (settings.c_cflag & HUPCL))
                 {
                     mvwprintw(cflags_win, 5, max_x - 18, "OFF");
-                    new_settings.c_cflag &= ~HUPCL;
+                    settings.c_cflag &= ~HUPCL;
                 }
-                else if (strcmp(item_name(cur_item), "HUPCL") == 0 && !(new_settings.c_cflag & HUPCL))
+                else if (strcmp(item_name(cur_item), "HUPCL") == 0 && !(settings.c_cflag & HUPCL))
                 {
                     mvwprintw(cflags_win, 5, max_x - 18, "ON ");
-                    new_settings.c_cflag |= HUPCL;
+                    settings.c_cflag |= HUPCL;
                 }
-                if (strcmp(item_name(cur_item), "CLOCAL") == 0 && (new_settings.c_cflag & CLOCAL))
+                if (strcmp(item_name(cur_item), "CLOCAL") == 0 && (settings.c_cflag & CLOCAL))
                 {
                     mvwprintw(cflags_win, 6, max_x - 18, "OFF");
-                    new_settings.c_cflag &= ~CLOCAL;
+                    settings.c_cflag &= ~CLOCAL;
                 }
-                else if (strcmp(item_name(cur_item), "CLOCAL") == 0 && !(new_settings.c_cflag & CLOCAL))
+                else if (strcmp(item_name(cur_item), "CLOCAL") == 0 && !(settings.c_cflag & CLOCAL))
                 {
                     mvwprintw(cflags_win, 6, max_x - 18, "ON ");
-                    new_settings.c_cflag |= CLOCAL;
+                    settings.c_cflag |= CLOCAL;
                 }
-                if (strcmp(item_name(cur_item), "CSTOPB") == 0 && (new_settings.c_cflag & CSTOPB))
+                if (strcmp(item_name(cur_item), "CSTOPB") == 0 && (settings.c_cflag & CSTOPB))
                 {
                     mvwprintw(cflags_win, 7, max_x - 18, "OFF");
-                    new_settings.c_cflag &= ~CSTOPB;
+                    settings.c_cflag &= ~CSTOPB;
                 }
-                else if (strcmp(item_name(cur_item), "CSTOPB") == 0 && !(new_settings.c_cflag & CSTOPB))
+                else if (strcmp(item_name(cur_item), "CSTOPB") == 0 && !(settings.c_cflag & CSTOPB))
                 {
                     mvwprintw(cflags_win, 7, max_x - 18, "ON ");
-                    new_settings.c_cflag |= CSTOPB;
+                    settings.c_cflag |= CSTOPB;
                 }
-                if (strcmp(item_name(cur_item), "CREAD") == 0 && (new_settings.c_cflag & CREAD))
+                if (strcmp(item_name(cur_item), "CREAD") == 0 && (settings.c_cflag & CREAD))
                 {
                     mvwprintw(cflags_win, 8, max_x - 18, "OFF");
-                    new_settings.c_cflag &= ~CREAD;
+                    settings.c_cflag &= ~CREAD;
                 }
-                else if (strcmp(item_name(cur_item), "CREAD") == 0 && !(new_settings.c_cflag & CREAD))
+                else if (strcmp(item_name(cur_item), "CREAD") == 0 && !(settings.c_cflag & CREAD))
                 {
                     mvwprintw(cflags_win, 8, max_x - 18, "ON ");
-                    new_settings.c_cflag |= CREAD;
+                    settings.c_cflag |= CREAD;
                 }
-                if (strcmp(item_name(cur_item), "PARENB") == 0 && (new_settings.c_cflag & PARENB))
+                if (strcmp(item_name(cur_item), "PARENB") == 0 && (settings.c_cflag & PARENB))
                 {
                     mvwprintw(cflags_win, 9, max_x - 18, "OFF");
-                    new_settings.c_cflag &= ~PARENB;
+                    settings.c_cflag &= ~PARENB;
                 }
-                else if (strcmp(item_name(cur_item), "PARENB") == 0 && !(new_settings.c_cflag & PARENB))
+                else if (strcmp(item_name(cur_item), "PARENB") == 0 && !(settings.c_cflag & PARENB))
                 {
                     mvwprintw(cflags_win, 9, max_x - 18, "ON ");
-                    new_settings.c_cflag |= PARENB;
+                    settings.c_cflag |= PARENB;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
