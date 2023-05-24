@@ -40,10 +40,6 @@ char *C_choices[] = {
 
 };
 
-void update_terminal_settings(struct termios new_settings)
-{
-    tcsetattr(0, TCSANOW, &new_settings);
-}
 MENU *create_menu(char **choices, int n_choices)
 {
     ITEM **my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
@@ -53,7 +49,8 @@ MENU *create_menu(char **choices, int n_choices)
     MENU *my_menu = new_menu((ITEM **)my_items);
     return my_menu;
 }
-void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x) {
+void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
+{
     WINDOW *sub_win = derwin(flags_win, 8, 20, 5, 13);
     keypad(flags_win, TRUE);
     set_menu_win(menu, flags_win);
@@ -75,7 +72,7 @@ int main()
     struct termios new_settings;
     tcgetattr(0, &old_settings);
     new_settings = old_settings;
-    
+
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
 
@@ -115,14 +112,14 @@ int main()
     box(menu_win, 0, 0);
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
-    
-    WINDOW *iflags_win = newwin(max_y -4, max_x -4, 1, 1);
-    WINDOW *oflags_win = newwin(max_y -4, max_x -4, 1, 1);
-    WINDOW *cflags_win = newwin(max_y -4, max_x -4, 1, 1);
+
+    WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
+    WINDOW *oflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
+    WINDOW *cflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
     create_window(oflags_win, o_menu, max_y, max_x);
     create_window(cflags_win, c_menu, max_y, max_x);
- 
+
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
     mvwprintw(iflags_win, 5, max_x - 18, (new_settings.c_iflag & IGNBRK) ? "ON" : "OFF");
@@ -189,9 +186,9 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
-                    update_terminal_settings(new_settings);
+                    tcsetattr(0, TCSANOW, &new_settings);
+
                     l = 1;
-                    break;
                 }
             }
         }
