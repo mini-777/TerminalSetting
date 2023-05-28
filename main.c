@@ -360,11 +360,11 @@ int main()
         }
     }
     // 초기화
-    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 
     return 0;
 }
