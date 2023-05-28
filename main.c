@@ -211,115 +211,115 @@ int main()
                 cur_item = current_item(i_menu);
                 if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
                     settings.c_iflag &= ~IGNBRK;
                 }
                 else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
                     settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "BRKINT") == 0 && (settings.c_iflag & BRKINT))
                 {
-                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 6, max_x - 18, "OFF");
                     settings.c_iflag &= ~BRKINT;
                 }
                 else if (strcmp(item_name(cur_item), "BRKINT") == 0 && !(settings.c_iflag & BRKINT))
                 {
-                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 6, max_x - 18, "ON ");
                     settings.c_iflag |= BRKINT;
                 }
                 if (strcmp(item_name(cur_item), "IGNPAR") == 0 && (settings.c_iflag & IGNPAR))
                 {
-                    mvwprintw(iflags_win, 6, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 7, max_x - 18, "OFF");
                     settings.c_iflag &= ~IGNPAR;
                 }
                 else if (strcmp(item_name(cur_item), "IGNPAR") == 0 && !(settings.c_iflag & IGNPAR))
                 {
-                    mvwprintw(iflags_win, 6, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 7, max_x - 18, "ON ");
                     settings.c_iflag |= IGNPAR;
                 }
                 if (strcmp(item_name(cur_item), "PARMRK") == 0 && (settings.c_iflag & PARMRK))
                 {
-                    mvwprintw(iflags_win, 7, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 8, max_x - 18, "OFF");
                     settings.c_iflag &= ~PARMRK;
                 }
                 else if (strcmp(item_name(cur_item), "PARMRK") == 0 && !(settings.c_iflag & PARMRK))
                 {
-                    mvwprintw(iflags_win, 7, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 8, max_x - 18, "ON ");
                     settings.c_iflag |= PARMRK;
                 }
                 if (strcmp(item_name(cur_item), "INPCK") == 0 && (settings.c_iflag & INPCK))
                 {
-                    mvwprintw(iflags_win, 8, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 9, max_x - 18, "OFF");
                     settings.c_iflag &= ~INPCK;
                 }
                 else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(settings.c_iflag & INPCK))
                 {
-                    mvwprintw(iflags_win, 8, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 9, max_x - 18, "ON ");
                     settings.c_iflag |= INPCK;
                 }
                 if (strcmp(item_name(cur_item), "ISTRIP") == 0 && (settings.c_iflag & ISTRIP))
                 {
-                    mvwprintw(iflags_win, 9, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 10, max_x - 18, "OFF");
                     settings.c_iflag &= ~ISTRIP;
                 }
                 else if (strcmp(item_name(cur_item), "ISTRIP") == 0 && !(settings.c_iflag & ISTRIP))
                 {
-                    mvwprintw(iflags_win, 9, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 10, max_x - 18, "ON ");
                     settings.c_iflag |= ISTRIP;
                 }
                 if (strcmp(item_name(cur_item), "INLCR") == 0 && (settings.c_iflag & INLCR))
                 {
-                    mvwprintw(iflags_win, 10, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 11, max_x - 18, "OFF");
                     settings.c_iflag &= ~INLCR;
                 }
                 else if (strcmp(item_name(cur_item), "INLCR") == 0 && !(settings.c_iflag & INLCR))
                 {
-                    mvwprintw(iflags_win, 10, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 11, max_x - 18, "ON ");
                     settings.c_iflag |= INLCR;
                 }
 
                 if (strcmp(item_name(cur_item), "IGNCR") == 0 && (settings.c_iflag & IGNCR))
                 {
-                    mvwprintw(iflags_win, 11, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 12, max_x - 18, "OFF");
                     settings.c_iflag &= ~IGNCR;
                 }
                 else if (strcmp(item_name(cur_item), "IGNCR") == 0 && !(settings.c_iflag & IGNCR))
                 {
-                    mvwprintw(iflags_win, 11, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 12, max_x - 18, "ON ");
                     settings.c_iflag |= IGNCR;
                 }
 
                 if (strcmp(item_name(cur_item), "ICRNL") == 0 && (settings.c_iflag & ICRNL))
                 {
-                    mvwprintw(iflags_win, 12, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 13, max_x - 18, "OFF");
                     settings.c_iflag &= ~ICRNL;
                 }
                 else if (strcmp(item_name(cur_item), "ICRNL") == 0 && !(settings.c_iflag & ICRNL))
                 {
-                    mvwprintw(iflags_win, 12, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 13, max_x - 18, "ON ");
                     settings.c_iflag |= ICRNL;
                 }
 
                 if (strcmp(item_name(cur_item), "IXON") == 0 && (settings.c_iflag & IXON))
                 {
-                    mvwprintw(iflags_win, 13, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 14, max_x - 18, "OFF");
                     settings.c_iflag &= ~IXON;
                 }
                 else if (strcmp(item_name(cur_item), "IXON") == 0 && !(settings.c_iflag & IXON))
                 {
-                    mvwprintw(iflags_win, 13, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 14, max_x - 18, "ON ");
                     settings.c_iflag |= IXON;
                 }
                 if (strcmp(item_name(cur_item), "IXOFF") == 0 && (settings.c_iflag & IXOFF))
                 {
-                    mvwprintw(iflags_win, 14, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 15, max_x - 18, "OFF");
                     settings.c_iflag &= ~IXOFF;
                 }
                 else if (strcmp(item_name(cur_item), "IXOFF") == 0 && !(settings.c_iflag & IXOFF))
                 {
-                    mvwprintw(iflags_win, 14, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 15, max_x - 18, "ON ");
                     settings.c_iflag |= IXOFF;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
