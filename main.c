@@ -9,8 +9,8 @@
 
 char *choices[] = {
     "C_Iflags",
-    "C_Oflags",
     "C_Lflags",
+    "ALL FLIP & EXIT",
     "Save & Exit",
 };
 
@@ -20,6 +20,12 @@ char *I_choices[] = {
     "IGNPAR",
     "PARMRK",
     "INPCK",
+    "ISTRIP",
+    "INLCR",
+    "IGNCR",
+    "ICRNL",
+    "IXON",
+    "IXOFF"
     "Back",
 
 };
@@ -113,7 +119,6 @@ int main()
     WINDOW *oflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *lflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
-    create_window(oflags_win, o_menu, max_y, max_x);
     create_window(lflags_win, l_menu, max_y, max_x);
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
@@ -123,15 +128,16 @@ int main()
     mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
     mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
     mvwprintw(iflags_win, 9, max_x - 18, (settings.c_iflag & INPCK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 10, max_x - 18, (settings.c_iflag & ISTRIP) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 11, max_x - 18, (settings.c_iflag & INLCR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 12, max_x - 18, (settings.c_iflag & IGNCR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 13, max_x - 18, (settings.c_iflag & ICRNL) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 14, max_x - 18, (settings.c_iflag & IXON) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 15, max_x - 18, (settings.c_iflag & IXOFF) ? "ON" : "OFF");
     mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
-    mvwprintw(oflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(oflags_win, 2, max_x / 2 - 8, "Output  Flags!");
-    mvwprintw(oflags_win, 5, max_x - 18, (settings.c_oflag & OLCUC) ? "ON" : "OFF");
-    mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
-
     mvwprintw(lflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(lflags_win, 2, max_x / 2 - 9, "Lontrol  Flags!");
+    mvwprintw(lflags_win, 2, max_x / 2 - 9, "Local  Flags!");
     mvwprintw(lflags_win, 5, max_x - 18, (settings.c_lflag & ISIG) ? "ON" : "OFF");
     mvwprintw(lflags_win, 6, max_x - 18, (settings.c_lflag & ICANON) ? "ON" : "OFF");
     mvwprintw(lflags_win, 7, max_x - 18, (settings.c_lflag & ECHO) ? "ON" : "OFF");
@@ -167,16 +173,17 @@ int main()
                     m = 0, i = 1;
                     break;
                 }
-                else if (strcmp(item_name(cur_item), "C_Oflags") == 0)
+                else if (strcmp(item_name(cur_item), "C_Lflags") == 0)
                 {
                     m = 0, i = 2;
                     break;
                 }
-                else if (strcmp(item_name(cur_item), "C_Lflags") == 0)
+                else if (strcmp(item_name(cur_item), "ALL FLIP & EXIT") == 0)
                 {
                     m = 0, i = 3;
                     break;
                 }
+
                 else if (strcmp(item_name(cur_item), "Save & Exit") == 0)
                 {
 
@@ -249,8 +256,71 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(settings.c_iflag & INPCK))
                 {
-                    mvwprintw(iflags_win, 9, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 8, max_x - 18, "ON ");
                     settings.c_iflag |= INPCK;
+                }
+                if (strcmp(item_name(cur_item), "ISTRIP") == 0 && (settings.c_iflag & ISTRIP))
+                {
+                    mvwprintw(iflags_win, 9, max_x - 18, "OFF");
+                    settings.c_iflag &= ~ISTRIP;
+                }
+                else if (strcmp(item_name(cur_item), "ISTRIP") == 0 && !(settings.c_iflag & ISTRIP))
+                {
+                    mvwprintw(iflags_win, 9, max_x - 18, "ON ");
+                    settings.c_iflag |= ISTRIP;
+                }
+                if (strcmp(item_name(cur_item), "INLCR") == 0 && (settings.c_iflag & INLCR))
+                {
+                    mvwprintw(iflags_win, 10, max_x - 18, "OFF");
+                    settings.c_iflag &= ~INLCR;
+                }
+                else if (strcmp(item_name(cur_item), "INLCR") == 0 && !(settings.c_iflag & INLCR))
+                {
+                    mvwprintw(iflags_win, 10, max_x - 18, "ON ");
+                    settings.c_iflag |= INLCR;
+                }
+
+                if (strcmp(item_name(cur_item), "IGNCR") == 0 && (settings.c_iflag & IGNCR))
+                {
+                    mvwprintw(iflags_win, 11, max_x - 18, "OFF");
+                    settings.c_iflag &= ~IGNCR;
+                }
+                else if (strcmp(item_name(cur_item), "IGNCR") == 0 && !(settings.c_iflag & IGNCR))
+                {
+                    mvwprintw(iflags_win, 11, max_x - 18, "ON ");
+                    settings.c_iflag |= IGNCR;
+                }
+
+                if (strcmp(item_name(cur_item), "ICRNL") == 0 && (settings.c_iflag & ICRNL))
+                {
+                    mvwprintw(iflags_win, 12, max_x - 18, "OFF");
+                    settings.c_iflag &= ~ICRNL;
+                }
+                else if (strcmp(item_name(cur_item), "ICRNL") == 0 && !(settings.c_iflag & ICRNL))
+                {
+                    mvwprintw(iflags_win, 12, max_x - 18, "ON ");
+                    settings.c_iflag |= ICRNL;
+                }
+
+                if (strcmp(item_name(cur_item), "IXON") == 0 && (settings.c_iflag & IXON))
+                {
+                    mvwprintw(iflags_win, 13, max_x - 18, "OFF");
+                    settings.c_iflag &= ~IXON;
+                }
+                else if (strcmp(item_name(cur_item), "IXON") == 0 && !(settings.c_iflag & IXON))
+                {
+                    mvwprintw(iflags_win, 13, max_x - 18, "ON ");
+                    settings.c_iflag |= IXON;
+                }
+                if (strcmp(item_name(cur_item), "IXOFF") == 0 && (settings.c_iflag & IXOFF))
+                {
+                    mvwprintw(iflags_win, 14, max_x - 18, "OFF");
+                    settings.c_iflag &= ~IXOFF;
+                }
+                else if (strcmp(item_name(cur_item), "IXOFF") == 0 && !(settings.c_iflag & IXOFF))
+                {
+                    mvwprintw(iflags_win, 14, max_x - 18, "ON ");
+                    settings.c_iflag |= IXOFF;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
@@ -262,42 +332,6 @@ int main()
             }
         }
         else if (m == 0 && i == 2)
-        {
-            post_menu(o_menu);
-            touchwin(oflags_win);
-            wrefresh(oflags_win);
-            c = wgetch(oflags_win);
-
-            switch (c)
-            {
-            case KEY_DOWN:
-                menu_driver(o_menu, REQ_DOWN_ITEM);
-                break;
-            case KEY_UP:
-                menu_driver(o_menu, REQ_UP_ITEM);
-                break;
-            case 10:
-                cur_item = current_item(o_menu);
-                if (strcmp(item_name(cur_item), "OLCUC") == 0 && (settings.c_oflag & OLCUC))
-                {
-                    mvwprintw(oflags_win, 5, max_x - 18, "OFF");
-                    settings.c_oflag &= ~OLCUC;
-                }
-                else if (strcmp(item_name(cur_item), "OLCUC") == 0 && !(settings.c_oflag & OLCUC))
-                {
-                    mvwprintw(oflags_win, 5, max_x - 18, "ON ");
-                    settings.c_oflag |= OLCUC;
-                }
-                if (strcmp(item_name(cur_item), "Back") == 0)
-                {
-                    m = 0, i = 0;
-
-                    break;
-                }
-                break;
-            }
-        }
-        else if (m == 0 && i == 3)
         {
             post_menu(l_menu);
             touchwin(lflags_win);
@@ -371,6 +405,11 @@ int main()
                 }
                 break;
             }
+        }
+        else if (m == 0 && i == 3)
+        {
+            settings.c_iflag ^= (IGNBRK | BRKINT | IGNPAR | PARMRK | INPCK | ISTRIP | INLCR | IGNCR | ICRNL | IXON | IXOFF);
+            settings.c_lflag ^= (ISIG | ICANON | ECHO | ECHOE | ECHOK);
         }
     }
     // 초기화
