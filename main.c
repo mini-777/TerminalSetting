@@ -113,7 +113,7 @@ int main()
     set_menu_back(my_menu, COLOR_PAIR(1));
     box(menu_win, 0, 0);
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
+    mvwprintw(menu_win, max_y - 4, max_x - 15, "F1 to Exit");
 
     WINDOW *iflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
 
