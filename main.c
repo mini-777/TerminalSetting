@@ -10,7 +10,7 @@
 char *choices[] = {
     "C_Iflags",
     "C_Oflags",
-    "C_Cflags",
+    "C_Lflags",
     "Save & Exit",
 };
 
@@ -172,7 +172,7 @@ int main()
                     m = 0, i = 2;
                     break;
                 }
-                else if (strcmp(item_name(cur_item), "C_Cflags") == 0)
+                else if (strcmp(item_name(cur_item), "C_Lflags") == 0)
                 {
                     m = 0, i = 3;
                     break;
