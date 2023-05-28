@@ -210,12 +210,12 @@ int main()
                 cur_item = current_item(i_menu);
                 if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
                     settings.c_iflag &= ~IGNBRK;
                 }
                 else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
                     settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "BRKINT") == 0 && (settings.c_iflag & BRKINT))
