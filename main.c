@@ -254,6 +254,8 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
+                    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+
                     break;
                 }
                 break;
@@ -289,6 +291,8 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
+                    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+
                     break;
                 }
                 break;
@@ -310,15 +314,15 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(l_menu);
-                if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_cflag & ISIG))
+                if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_cflag & ICANON))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
-                    settings.c_cflag ^= ISIG;
+                    settings.c_cflag ^= ICANON;
                 }
-                else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_cflag & ISIG))
+                else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_cflag & ICANON))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "ON ");
-                    settings.c_cflag ^= ISIG;
+                    settings.c_cflag ^= ICANON;
                 }
                 if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
                 {
@@ -353,6 +357,8 @@ int main()
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
+                    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+
                     break;
                 }
                 break;
@@ -364,7 +370,6 @@ int main()
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
-    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 
     return 0;
 }
