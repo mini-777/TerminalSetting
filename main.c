@@ -133,7 +133,6 @@ int main()
     mvwprintw(iflags_win, 12, max_x - 18, (settings.c_iflag & IGNCR) ? "ON" : "OFF");
     mvwprintw(iflags_win, 13, max_x - 18, (settings.c_iflag & ICRNL) ? "ON" : "OFF");
     mvwprintw(iflags_win, 14, max_x - 18, (settings.c_iflag & IXON) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 15, max_x - 18, (settings.c_iflag & IXOFF) ? "ON" : "OFF");
     mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     mvwprintw(lflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
@@ -311,16 +310,6 @@ int main()
                 {
                     mvwprintw(iflags_win, 14, max_x - 18, "ON ");
                     settings.c_iflag |= IXON;
-                }
-                if (strcmp(item_name(cur_item), "IXOFF") == 0 && (settings.c_iflag & IXOFF))
-                {
-                    mvwprintw(iflags_win, 15, max_x - 18, "OFF");
-                    settings.c_iflag &= ~IXOFF;
-                }
-                else if (strcmp(item_name(cur_item), "IXOFF") == 0 && !(settings.c_iflag & IXOFF))
-                {
-                    mvwprintw(iflags_win, 15, max_x - 18, "ON ");
-                    settings.c_iflag |= IXOFF;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
