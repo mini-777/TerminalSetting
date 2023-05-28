@@ -314,12 +314,12 @@ int main()
                 if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_cflag & ICANON))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
-                    settings.c_cflag ^= ICANON;
+                    settings.c_cflag &= ~ICANON;
                 }
                 else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_cflag & ICANON))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "ON ");
-                    settings.c_cflag ^= ICANON;
+                    settings.c_cflag |= ICANON;
                 }
                 if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
                 {
