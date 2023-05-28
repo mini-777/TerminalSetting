@@ -101,7 +101,7 @@ int main()
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu_win = newwin(max_y - 3, max_x - 4, 1, 1);
-    WINDOW *sub_win = derwin(menu_win, 7, 20, max_y / 2 - 6, max_x / 2 - 9);
+    WINDOW *sub_win = derwin(menu_win, , 20, max_y / 2 - 6, max_x / 2 - 9);
     // 윈도우 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
@@ -115,7 +115,7 @@ int main()
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
 
-    WINDOW *iflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
+    WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
 
     WINDOW *lflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
@@ -123,7 +123,7 @@ int main()
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
-    mvwprintw(iflags_win, 3, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 4, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
     mvwprintw(iflags_win, 6, max_x - 18, (settings.c_iflag & BRKINT) ? "ON" : "OFF");
     mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
     mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
