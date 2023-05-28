@@ -115,7 +115,7 @@ int main()
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
 
-    WINDOW *iflags_win = newwin(max_y - 2, max_x - 4, 1, 1);
+    WINDOW *iflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
 
     WINDOW *lflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
