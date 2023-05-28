@@ -55,7 +55,7 @@ MENU *create_menu(char **choices, int n_choices)
 }
 void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
 {
-    WINDOW *sub_win = derwin(flags_win, 16, 20, 5, 13);
+    WINDOW *sub_win = derwin(flags_win, 15, 20, 5, 13);
     keypad(flags_win, TRUE);
     set_menu_win(menu, flags_win);
     set_menu_sub(menu, sub_win);
@@ -100,7 +100,7 @@ int main()
 
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
-    WINDOW *menu_win = newwin(max_y - 3, max_x - 4, 1, 1);
+    WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
     // 윈도우 구성
     keypad(menu_win, TRUE);
