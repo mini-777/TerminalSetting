@@ -101,7 +101,7 @@ int main()
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *sub_win = derwin(menu_win, 15, 20, max_y / 2 - 6, max_x / 2 - 9);
+    WINDOW *sub_win = derwin(menu_win, 7, 20, max_y / 2 - 6, max_x / 2 - 9);
     // 윈도우 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
