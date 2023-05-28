@@ -29,6 +29,7 @@ char *O_choices[] = {
 
 };
 char *L_choices[] = {
+    "ISIG",
     "ICANON",
     "ECHO",
     "ECHOE",
@@ -131,10 +132,11 @@ int main()
 
     mvwprintw(lflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(lflags_win, 2, max_x / 2 - 9, "Lontrol  Flags!");
-    mvwprintw(lflags_win, 5, max_x - 18, (settings.c_lflag & ICANON) ? "ON" : "OFF");
-    mvwprintw(lflags_win, 6, max_x - 18, (settings.c_lflag & ECHO) ? "ON" : "OFF");
-    mvwprintw(lflags_win, 7, max_x - 18, (settings.c_lflag & ECHOE) ? "ON" : "OFF");
-    mvwprintw(lflags_win, 8, max_x - 18, (settings.c_lflag & ECHOK) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 5, max_x - 18, (settings.c_lflag & ISIG) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 6, max_x - 18, (settings.c_lflag & ICANON) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 7, max_x - 18, (settings.c_lflag & ECHO) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 8, max_x - 18, (settings.c_lflag & ECHOE) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 9, max_x - 18, (settings.c_lflag & ECHOK) ? "ON" : "OFF");
     mvwprintw(lflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     // 사용자 입력 처l
@@ -311,6 +313,16 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(l_menu);
+                if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_cflag & ISIG))
+                {
+                    mvwprintw(lflags_win, 5, max_x - 18, "OFF");
+                    settings.c_cflag &= ~ISIG;
+                }
+                else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_cflag & ISIG))
+                {
+                    mvwprintw(lflags_win, 5, max_x - 18, "ON ");
+                    settings.c_cflag |= ISIG;
+                }
                 if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_cflag & ICANON))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
