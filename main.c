@@ -123,7 +123,7 @@ int main()
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
-    mvwprintw(iflags_win, 5, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 4, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
     mvwprintw(iflags_win, 6, max_x - 18, (settings.c_iflag & BRKINT) ? "ON" : "OFF");
     mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
     mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
@@ -211,12 +211,12 @@ int main()
                 cur_item = current_item(i_menu);
                 if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 4, max_x - 18, "OFF");
                     settings.c_iflag &= ~IGNBRK;
                 }
                 else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 4, max_x - 18, "ON ");
                     settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "BRKINT") == 0 && (settings.c_iflag & BRKINT))
