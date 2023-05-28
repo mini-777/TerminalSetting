@@ -55,7 +55,7 @@ MENU *create_menu(char **choices, int n_choices)
 }
 void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
 {
-    WINDOW *sub_win = derwin(flags_win, 16, 20, 5, 13);
+    WINDOW *sub_win = derwin(flags_win, 15, 20, 5, 13);
     keypad(flags_win, TRUE);
     set_menu_win(menu, flags_win);
     set_menu_sub(menu, sub_win);
@@ -101,7 +101,7 @@ int main()
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
     WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *sub_win = derwin(menu_win, 16, 20, max_y / 2 - 6, max_x / 2 - 9);
+    WINDOW *sub_win = derwin(menu_win, 15, 20, max_y / 2 - 6, max_x / 2 - 9);
     // 윈도우 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
@@ -123,17 +123,17 @@ int main()
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
-    mvwprintw(iflags_win, 4, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 5, max_x - 18, (settings.c_iflag & BRKINT) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 6, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & INPCK) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 9, max_x - 18, (settings.c_iflag & ISTRIP) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 10, max_x - 18, (settings.c_iflag & INLCR) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 11, max_x - 18, (settings.c_iflag & IGNCR) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 12, max_x - 18, (settings.c_iflag & ICRNL) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 13, max_x - 18, (settings.c_iflag & IXON) ? "ON" : "OFF");
-    mvwprintw(iflags_win, 14, max_x - 18, (settings.c_iflag & IXOFF) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 5, max_x - 18, (settings.c_iflag & IGNBRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 6, max_x - 18, (settings.c_iflag & BRKINT) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 7, max_x - 18, (settings.c_iflag & IGNPAR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 8, max_x - 18, (settings.c_iflag & PARMRK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 9, max_x - 18, (settings.c_iflag & INPCK) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 10, max_x - 18, (settings.c_iflag & ISTRIP) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 11, max_x - 18, (settings.c_iflag & INLCR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 12, max_x - 18, (settings.c_iflag & IGNCR) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 13, max_x - 18, (settings.c_iflag & ICRNL) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 14, max_x - 18, (settings.c_iflag & IXON) ? "ON" : "OFF");
+    mvwprintw(iflags_win, 15, max_x - 18, (settings.c_iflag & IXOFF) ? "ON" : "OFF");
     mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
     mvwprintw(lflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
