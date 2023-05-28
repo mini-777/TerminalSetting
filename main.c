@@ -55,7 +55,7 @@ MENU *create_menu(char **choices, int n_choices)
 }
 void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
 {
-    WINDOW *sub_win = derwin(flags_win, 15, 20, 5, 13);
+    WINDOW *sub_win = derwin(flags_win, 16, 20, 5, 13);
     keypad(flags_win, TRUE);
     set_menu_win(menu, flags_win);
     set_menu_sub(menu, sub_win);
