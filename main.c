@@ -313,55 +313,55 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(l_menu);
-                if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_cflag & ISIG))
+                if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_lflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ISIG;
+                    settings.c_lflag &= ~ISIG;
                 }
-                else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_cflag & ISIG))
+                else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_lflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "ON ");
-                    settings.c_cflag |= ISIG;
+                    settings.c_lflag |= ISIG;
                 }
-                if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_cflag & ICANON))
+                if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_lflag & ICANON))
                 {
                     mvwprintw(lflags_win, 6, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ICANON;
+                    settings.c_lflag &= ~ICANON;
                 }
-                else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_cflag & ICANON))
+                else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_lflag & ICANON))
                 {
                     mvwprintw(lflags_win, 6, max_x - 18, "ON ");
-                    settings.c_cflag |= ICANON;
+                    settings.c_lflag |= ICANON;
                 }
-                if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
+                if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_lflag & ECHO))
                 {
                     mvwprintw(lflags_win, 7, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ECHO;
+                    settings.c_lflag &= ~ECHO;
                 }
-                else if (strcmp(item_name(cur_item), "ECHO") == 0 && !(settings.c_cflag & ECHO))
+                else if (strcmp(item_name(cur_item), "ECHO") == 0 && !(settings.c_lflag & ECHO))
                 {
                     mvwprintw(lflags_win, 7, max_x - 18, "ON ");
-                    settings.c_cflag |= ECHO;
+                    settings.c_lflag |= ECHO;
                 }
-                if (strcmp(item_name(cur_item), "ECHOE") == 0 && (settings.c_cflag & ECHOE))
+                if (strcmp(item_name(cur_item), "ECHOE") == 0 && (settings.c_lflag & ECHOE))
                 {
                     mvwprintw(lflags_win, 8, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ECHOE;
+                    settings.c_lflag &= ~ECHOE;
                 }
-                else if (strcmp(item_name(cur_item), "ECHOE") == 0 && !(settings.c_cflag & ECHOE))
+                else if (strcmp(item_name(cur_item), "ECHOE") == 0 && !(settings.c_lflag & ECHOE))
                 {
                     mvwprintw(lflags_win, 8, max_x - 18, "ON ");
-                    settings.c_cflag |= ECHOE;
+                    settings.c_lflag |= ECHOE;
                 }
-                if (strcmp(item_name(cur_item), "ECHOK") == 0 && (settings.c_cflag & ECHOK))
+                if (strcmp(item_name(cur_item), "ECHOK") == 0 && (settings.c_lflag & ECHOK))
                 {
                     mvwprintw(lflags_win, 9, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ECHOK;
+                    settings.c_lflag &= ~ECHOK;
                 }
-                else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_cflag & ECHOK))
+                else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_lflag & ECHOK))
                 {
-                    mvwprintw(lflags_win, 9, max_x - 18, "ON ");
-                    settings.c_cflag |= ECHOK;
+                    mvwprintw(lflags_win, , max_x - 18, "ON ");
+                    settings.c_lflag |= ECHOK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
