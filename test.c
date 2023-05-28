@@ -1,154 +1,182 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include <curses.h>
-#include <menu.h>
-#include <string.h>
 #include <termios.h>
+#include <unistd.h>
+#include <string.h>
 
-char *choices[] = {
-    "C_Iflags",
-    "C_Oflags",
-    "C_Cflags",
-    "Save & Exit",
-};
-
-char *Ichoices[] = {
-    "IGNBRK",
-    "Flags 2",
-    "Flags 3",
-    "Flags 4",
-    "Flags 5",
-    "Back",
-    "Save & Exit",
-};
-
-MENU *create_menu(char **choices, int n_choices)
+struct flaginfo
 {
-    ITEM **my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+    int fl_value;
+    char *fl_name;
+};
 
-    for (int i = 0; i < n_choices; ++i)
-        my_items[i] = new_item(choices[i], "");
-    MENU *my_menu = new_menu((ITEM **)my_items);
-    return my_menu;
+void showbaud(int thespeed);
+void show_some_flags(struct termios *ttyp);
+void show_flagset(int thevalue, struct flaginfo thebitnames[]);
+void checkopt(int argc, char *argv[], struct termios *ttyp);
+void set_Iflag(int argc, char *argv[], struct termios *ttyp);
+void set_Oflag(int argc, char *argv[]);
+void set_Lflag(int argc, char *argv[]);
+
+int main(int argc, char *argv[])
+{
+    struct termios ttyinfo;
+    if (tcgetattr(0, &ttyinfo) == -1)
+    {
+        perror("cannot get params about stdin");
+        exit(1);
+    }
+    showbaud(cfgetospeed(&ttyinfo));
+    printf("erase = ^%c;",
+           ttyinfo.c_cc[VERASE] - 1 + 'A');
+    printf("kill = ^%c;\n",
+           ttyinfo.c_cc[VKILL] - 1 + 'A');
+    if (argc > 1)
+    {
+        tcgetattr(STDIN_FILENO, &ttyinfo);
+        checkopt(argc, argv, &ttyinfo);
+        tcsetattr(STDIN_FILENO, TCSANOW, &ttyinfo);
+    }
+    show_some_flags(&ttyinfo);
 }
 
-struct termios old_settings;
-
-int main()
+void showbaud(int thespeed)
 {
-    struct termios new_settings;
-    tcgetattr(0, &old_settings);
-    new_settings = old_settings;
-
-    initscr();
-    cbreak();
-    noecho();
-    keypad(stdscr, TRUE);
-    start_color();
-    init_pair(1, COLOR_WHITE, COLOR_BLUE);
-    init_pair(2, COLOR_BLUE, COLOR_WHITE);
-
-    // 메뉴 구성 및 생성
-    int n_choices, i_choices, o_choices, l_choices;
-    n_choices = sizeof(choices) / sizeof(char *);
-    i_choices = sizeof(Ichoices) / sizeof(char *);
-    MENU *my_menu = create_menu(choices, n_choices);
-    MENU *i_menu = create_menu(Ichoices, i_choices);
-    // MENU *o_menu = create_menu(Ochoices, o_choices);
-    // MENU *l_menu = create_menu(Lchoices, l_choices);
-
-    int max_y, max_x;
-    getmaxyx(stdscr, max_y, max_x);
-    WINDOW *menu_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
-    // 메뉴 출력
-    keypad(menu_win, TRUE);
-    set_menu_win(my_menu, menu_win);
-    set_menu_sub(my_menu, sub_win);
-
-    wbkgd(stdscr, COLOR_PAIR(1));
-    wbkgd(menu_win, COLOR_PAIR(1));
-    set_menu_fore(my_menu, COLOR_PAIR(2));
-    set_menu_back(my_menu, COLOR_PAIR(1));
-    box(menu_win, 0, 0);
-    mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(menu_win, max_y - 5, max_x - 15, "F1 to Exit");
-
-    WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *isub_win = derwin(iflags_win, 8, 20, 5, 13);
-    keypad(iflags_win, TRUE);
-    set_menu_win(i_menu, iflags_win);
-    set_menu_sub(i_menu, isub_win);
-
-    wbkgd(stdscr, COLOR_PAIR(1));
-    wbkgd(iflags_win, COLOR_PAIR(1));
-    set_menu_fore(i_menu, COLOR_PAIR(2));
-    set_menu_back(i_menu, COLOR_PAIR(1));
-    box(iflags_win, 0, 0);
-    mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags");
-    mvwprintw(iflags_win, 5, max_x - 18, "ON");
-    mvwprintw(iflags_win, 6, max_x - 18, "ON");
-    mvwprintw(iflags_win, 7, max_x - 18, "ON");
-    mvwprintw(iflags_win, 8, max_x - 18, "ON");
-    mvwprintw(iflags_win, 9, max_x - 18, "ON");
-    mvwprintw(iflags_win, max_y - 5, max_x - 15, "F1 to Exit");
-
-    // 사용자 입력 처리
-    int c;
-    int m = 1, i = 0, o = 0, l = 0;
-    ITEM *cur_item;
-    while (c != KEY_F(1))
+    switch (thespeed)
     {
-        if (m == 1)
+    case B300:
+        printf("speed 300 baud;\n");
+        break;
+    case B600:
+        printf("speed 600 baud;\n");
+        break;
+    case B1200:
+        printf("speed 1200 baud;\n");
+        break;
+    case B1800:
+        printf("speed 1800 baud;\n");
+        break;
+    case B2400:
+        printf("speed 2400 baud;\n");
+        break;
+    case B4800:
+        printf("speed 4800 baud;\n");
+        break;
+    case B9600:
+        printf("speed 9600 baud;\n");
+        break;
+    default:
+        printf("Fast;\n");
+        break;
+    }
+}
+
+struct flaginfo input_flags[] = {
+    IGNBRK, "ignbrk",
+    BRKINT, "brkint",
+    IGNPAR, "ignpar",
+    PARMRK, "parmrk",
+    INPCK, "inpck",
+    ISTRIP, "istrip",
+    INLCR, "inlcr",
+    IGNCR, "igncr",
+    ICRNL, "icrnl",
+    IXON, "ixon",
+    IXOFF, "ixoff",
+    0, NULL};
+
+struct flaginfo output_flags[] = {
+    OLCUC, "olcuc",
+    0, NULL};
+
+struct flaginfo local_flags[] = {
+    ISIG, "isig",
+    ICANON, "icanon",
+    ECHO, "echo",
+    ECHOE, "echoe",
+    ECHOK, "echok",
+    0, NULL};
+
+void show_some_flags(struct termios *ttyp)
+{
+    show_flagset(ttyp->c_iflag, input_flags);
+    show_flagset(ttyp->c_oflag, output_flags);
+    show_flagset(ttyp->c_lflag, local_flags);
+}
+
+void show_flagset(int thevalue, struct flaginfo thebitnames[])
+{
+    int i;
+    for (i = 0; thebitnames[i].fl_value; i++)
+    {
+        if (thevalue & thebitnames[i].fl_value)
+            printf("%s ", thebitnames[i].fl_name);
+        else
+            printf("-%s ", thebitnames[i].fl_name);
+    }
+    printf("\n");
+}
+
+void checkopt(int argc, char *argv[], struct termios *ttyp)
+{
+    if (strcmp(argv[1], "-FL") == 0)
+    {
+        if (argc > 2)
         {
-            post_menu(my_menu);
-            touchwin(menu_win);
-            wrefresh(menu_win);
-            c = wgetch(menu_win);
-            switch (c)
+            for (int i = 2; i < argc; i++)
             {
-            case KEY_DOWN:
-                menu_driver(my_menu, REQ_DOWN_ITEM);
-                break;
-            case KEY_UP:
-                menu_driver(my_menu, REQ_UP_ITEM);
-                break;
-            case 10:
-                cur_item = current_item(my_menu);
-                if (strcmp(item_name(cur_item), "Input  Flags") == 0)
-                {
-                    m = 0, i = 1;
-                    break;
-                }
-            }
-        }
-        if (m == 0 && i == 1)
-        {
-            post_menu(i_menu);
-            touchwin(iflags_win);
-            wrefresh(iflags_win);
-            c = wgetch(iflags_win);
-            switch (c)
-            {
-            case KEY_DOWN:
-                menu_driver(i_menu, REQ_DOWN_ITEM);
-                break;
-            case KEY_UP:
-                menu_driver(i_menu, REQ_UP_ITEM);
-                break;
-            case 10:
-                cur_item = current_item(i_menu);
-                if (strcmp(item_name(cur_item), "Back") == 0)
-                {
-                    m = 1, i = 0;
-                    mvwprintw(menu_win, 16, max_x, "m = %d, i = %d", m, i);
-                    break;
-                }
+                if (strcmp(argv[i], "isig") == 0)
+                    ttyp->c_lflag ^= ISIG;
+                else if (strcmp(argv[i], "icanon") == 0)
+                    ttyp->c_lflag ^= ICANON;
+                else if (strcmp(argv[i], "echo") == 0)
+                    ttyp->c_lflag ^= ECHO;
+                else if (strcmp(argv[i], "echoe") == 0)
+                    ttyp->c_lflag ^= ECHOE;
+                else if (strcmp(argv[i], "echok") == 0)
+                    ttyp->c_lflag ^= ECHOK;
             }
         }
     }
-    // 초기화
-    unpost_menu(my_menu);
-    free_menu(my_menu);
-    endwin();
+    else if (strcmp(argv[1], "-FO") == 0)
+    {
+        ttyp->c_oflag ^= OLCUC;
+    }
+    else if (strcmp(argv[1], "-FI") == 0)
+    {
+        if (argc > 2)
+        {
+            for (int i = 2; i < argc; i++)
+            {
+                if (strcmp(argv[i], "ignbrk") == 0)
+                    ttyp->c_iflag ^= IGNBRK;
+                else if (strcmp(argv[i], "brkint") == 0)
+                    ttyp->c_iflag ^= BRKINT;
+                else if (strcmp(argv[i], "ignpar") == 0)
+                    ttyp->c_iflag ^= IGNPAR;
+                else if (strcmp(argv[i], "parmrk") == 0)
+                    ttyp->c_iflag ^= PARMRK;
+                else if (strcmp(argv[i], "inpck") == 0)
+                    ttyp->c_iflag ^= INPCK;
+                else if (strcmp(argv[i], "istrip") == 0)
+                    ttyp->c_iflag ^= ISTRIP;
+                else if (strcmp(argv[i], "inlcr") == 0)
+                    ttyp->c_iflag ^= INLCR;
+                else if (strcmp(argv[i], "igncr") == 0)
+                    ttyp->c_iflag ^= IGNCR;
+                else if (strcmp(argv[i], "icrnl") == 0)
+                    ttyp->c_iflag ^= ICRNL;
+                else if (strcmp(argv[i], "ixon") == 0)
+                    ttyp->c_iflag ^= IXON;
+                else if (strcmp(argv[i], "ixoff") == 0)
+                    ttyp->c_iflag ^= IXOFF;
+            }
+        }
+    }
+    else if (strcmp(argv[1], "-A") == 0)
+    {
+        ttyp->c_iflag ^= (IGNBRK | BRKINT | IGNPAR | PARMRK | INPCK | ISTRIP | INLCR | IGNCR | ICRNL | IXON | IXOFF);
+        ttyp->c_oflag ^= OLCUC;
+        ttyp->c_lflag ^= (ISIG | ICANON | ECHO | ECHOE | ECHOK);
+    }
 }

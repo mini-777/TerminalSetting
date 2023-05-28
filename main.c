@@ -313,12 +313,12 @@ int main()
                 if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_cflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
-                    settings.c_cflag &= ~ISIG;
+                    settings.c_cflag ^= ISIG;
                 }
                 else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_cflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "ON ");
-                    settings.c_cflag |= ISIG;
+                    settings.c_cflag ^= ISIG;
                 }
                 if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
                 {
