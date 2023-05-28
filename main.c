@@ -325,42 +325,42 @@ int main()
                 }
                 if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_cflag & ICANON))
                 {
-                    mvwprintw(lflags_win, 5, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, 6, max_x - 18, "OFF");
                     settings.c_cflag &= ~ICANON;
                 }
                 else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_cflag & ICANON))
                 {
-                    mvwprintw(lflags_win, 5, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, 6, max_x - 18, "ON ");
                     settings.c_cflag |= ICANON;
                 }
                 if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
                 {
-                    mvwprintw(lflags_win, 6, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, 7, max_x - 18, "OFF");
                     settings.c_cflag &= ~ECHO;
                 }
                 else if (strcmp(item_name(cur_item), "ECHO") == 0 && !(settings.c_cflag & ECHO))
                 {
-                    mvwprintw(lflags_win, 6, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, 7, max_x - 18, "ON ");
                     settings.c_cflag |= ECHO;
                 }
                 if (strcmp(item_name(cur_item), "ECHOE") == 0 && (settings.c_cflag & ECHOE))
                 {
-                    mvwprintw(lflags_win, 7, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, 8, max_x - 18, "OFF");
                     settings.c_cflag &= ~ECHOE;
                 }
                 else if (strcmp(item_name(cur_item), "ECHOE") == 0 && !(settings.c_cflag & ECHOE))
                 {
-                    mvwprintw(lflags_win, 7, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, 8, max_x - 18, "ON ");
                     settings.c_cflag |= ECHOE;
                 }
                 if (strcmp(item_name(cur_item), "ECHOK") == 0 && (settings.c_cflag & ECHOK))
                 {
-                    mvwprintw(lflags_win, 8, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, 9, max_x - 18, "OFF");
                     settings.c_cflag &= ~ECHOK;
                 }
                 else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_cflag & ECHOK))
                 {
-                    mvwprintw(lflags_win, 8, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, 9, max_x - 18, "ON ");
                     settings.c_cflag |= ECHOK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
