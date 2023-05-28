@@ -179,6 +179,8 @@ int main()
                 {
 
                     l = 1;
+                    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+                    break;
                 }
                 break;
             }
@@ -362,7 +364,6 @@ int main()
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
-    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 
     return 0;
 }
