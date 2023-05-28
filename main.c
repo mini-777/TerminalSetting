@@ -5,6 +5,8 @@
 #include <termios.h>
 #include <signal.h>
 
+#include <unistd.h>
+
 char *choices[] = {
     "C_Iflags",
     "C_Oflags",
@@ -22,20 +24,15 @@ char *I_choices[] = {
 
 };
 char *O_choices[] = {
-    "OPOST",
-    "ONLCR",
-    "ONOCR",
-    "OFILL",
-    "OCRNL",
+    "OLCUC",
     "Back",
 
 };
-char *C_choices[] = {
-    "HUPCL",
-    "CLOCAL",
-    "CSTOPB",
-    "CREAD",
-    "PARENB",
+char *L_choices[] = {
+    "ICANON",
+    "ECHO",
+    "ECHOE",
+    "ECHOK",
     "Back",
 
 };
@@ -68,6 +65,8 @@ void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
 
 int main()
 {
+    struct termios settings;
+    tcgetattr(STDIN_FILENO, &settings);
 
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
@@ -81,16 +80,16 @@ int main()
     init_pair(2, COLOR_BLUE, COLOR_WHITE);
 
     // 메뉴 구성 및 생성
-    int n_choices, i_choices, o_choices, l_choices, c_choices;
+    int n_choices, i_choices, o_choices, l_choices;
     n_choices = sizeof(choices) / sizeof(char *);
     i_choices = sizeof(I_choices) / sizeof(char *);
     o_choices = sizeof(O_choices) / sizeof(char *);
-    c_choices = sizeof(C_choices) / sizeof(char *);
+    l_choices = sizeof(L_choices) / sizeof(char *);
 
     MENU *my_menu = create_menu(choices, n_choices);
     MENU *i_menu = create_menu(I_choices, i_choices);
     MENU *o_menu = create_menu(O_choices, o_choices);
-    MENU *c_menu = create_menu(C_choices, c_choices);
+    MENU *l_menu = create_menu(L_choices, l_choices);
 
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
@@ -111,13 +110,10 @@ int main()
 
     WINDOW *iflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     WINDOW *oflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
-    WINDOW *cflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
+    WINDOW *lflags_win = newwin(max_y - 4, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
     create_window(oflags_win, o_menu, max_y, max_x);
-    create_window(cflags_win, c_menu, max_y, max_x);
-
-    struct termios settings;
-    tcgetattr(0, &settings);
+    create_window(lflags_win, l_menu, max_y, max_x);
 
     mvwprintw(iflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(iflags_win, 2, max_x / 2 - 8, "Input  Flags!");
@@ -130,23 +126,19 @@ int main()
 
     mvwprintw(oflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(oflags_win, 2, max_x / 2 - 8, "Output  Flags!");
-    mvwprintw(oflags_win, 5, max_x - 18, (settings.c_iflag & OPOST) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 6, max_x - 18, (settings.c_iflag & ONLCR) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 7, max_x - 18, (settings.c_iflag & ONOCR) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 8, max_x - 18, (settings.c_iflag & OFILL) ? "ON" : "OFF");
-    mvwprintw(oflags_win, 9, max_x - 18, (settings.c_iflag & OCRNL) ? "ON" : "OFF");
+    mvwprintw(oflags_win, 5, max_x - 18, (settings.c_oflag & OLCUC) ? "ON" : "OFF");
     mvwprintw(oflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
-    mvwprintw(cflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
-    mvwprintw(cflags_win, 2, max_x / 2 - 9, "Control  Flags!");
-    mvwprintw(cflags_win, 5, max_x - 18, (settings.c_iflag & HUPCL) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 6, max_x - 18, (settings.c_iflag & CLOCAL) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 7, max_x - 18, (settings.c_iflag & CSTOPB) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 8, max_x - 18, (settings.c_iflag & CREAD) ? "ON" : "OFF");
-    mvwprintw(cflags_win, 9, max_x - 18, (settings.c_iflag & PARENB) ? "ON" : "OFF");
-    mvwprintw(cflags_win, max_y - 5, max_x - 15, "F1 to Exit");
+    mvwprintw(lflags_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
+    mvwprintw(lflags_win, 2, max_x / 2 - 9, "Lontrol  Flags!");
+    mvwprintw(lflags_win, 5, max_x - 18, (settings.c_lflag & ICANON) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 6, max_x - 18, (settings.c_lflag & ECHO) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 7, max_x - 18, (settings.c_lflag & ECHOE) ? "ON" : "OFF");
+    mvwprintw(lflags_win, 8, max_x - 18, (settings.c_lflag & ECHOK) ? "ON" : "OFF");
+    mvwprintw(lflags_win, max_y - 5, max_x - 15, "F1 to Exit");
 
-    // 사용자 입력 처리
+    // 사용자 입력 처l
+
     int c;
     int m = 0, i = 0, o = 0, l = 0;
     ITEM *cur_item;
@@ -282,55 +274,15 @@ int main()
                 break;
             case 10:
                 cur_item = current_item(o_menu);
-                if (strcmp(item_name(cur_item), "OPOST") == 0 && (settings.c_oflag & OPOST))
+                if (strcmp(item_name(cur_item), "OLCUC") == 0 && (settings.c_oflag & OLCUC))
                 {
                     mvwprintw(oflags_win, 5, max_x - 18, "OFF");
-                    settings.c_oflag &= ~OPOST;
+                    settings.c_oflag &= ~OLCUC;
                 }
-                else if (strcmp(item_name(cur_item), "OPOST") == 0 && !(settings.c_oflag & OPOST))
+                else if (strcmp(item_name(cur_item), "OLCUC") == 0 && !(settings.c_oflag & OLCUC))
                 {
                     mvwprintw(oflags_win, 5, max_x - 18, "ON ");
-                    settings.c_oflag |= OPOST;
-                }
-                if (strcmp(item_name(cur_item), "ONLCR") == 0 && (settings.c_oflag & ONLCR))
-                {
-                    mvwprintw(oflags_win, 6, max_x - 18, "OFF");
-                    settings.c_oflag &= ~ONLCR;
-                }
-                else if (strcmp(item_name(cur_item), "ONLCR") == 0 && !(settings.c_oflag & ONLCR))
-                {
-                    mvwprintw(oflags_win, 6, max_x - 18, "ON ");
-                    settings.c_oflag |= ONLCR;
-                }
-                if (strcmp(item_name(cur_item), "ONOCR") == 0 && (settings.c_oflag & ONOCR))
-                {
-                    mvwprintw(oflags_win, 7, max_x - 18, "OFF");
-                    settings.c_oflag &= ~ONOCR;
-                }
-                else if (strcmp(item_name(cur_item), "ONOCR") == 0 && !(settings.c_oflag & ONOCR))
-                {
-                    mvwprintw(oflags_win, 7, max_x - 18, "ON ");
-                    settings.c_oflag |= ONOCR;
-                }
-                if (strcmp(item_name(cur_item), "OFILL") == 0 && (settings.c_oflag & OFILL))
-                {
-                    mvwprintw(oflags_win, 8, max_x - 18, "OFF");
-                    settings.c_oflag &= ~OFILL;
-                }
-                else if (strcmp(item_name(cur_item), "OFILL") == 0 && !(settings.c_oflag & OFILL))
-                {
-                    mvwprintw(oflags_win, 8, max_x - 18, "ON ");
-                    settings.c_oflag |= OFILL;
-                }
-                if (strcmp(item_name(cur_item), "OCRNL") == 0 && (settings.c_oflag & OCRNL))
-                {
-                    mvwprintw(oflags_win, 9, max_x - 18, "OFF");
-                    settings.c_oflag &= ~OCRNL;
-                }
-                else if (strcmp(item_name(cur_item), "OCRNL") == 0 && !(settings.c_oflag & OCRNL))
-                {
-                    mvwprintw(oflags_win, 9, max_x - 18, "ON ");
-                    settings.c_oflag |= OCRNL;
+                    settings.c_oflag |= OLCUC;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
@@ -342,69 +294,59 @@ int main()
         }
         else if (m == 0 && i == 3)
         {
-            post_menu(c_menu);
-            touchwin(cflags_win);
-            wrefresh(cflags_win);
-            c = wgetch(cflags_win);
+            post_menu(l_menu);
+            touchwin(lflags_win);
+            wrefresh(lflags_win);
+            c = wgetch(lflags_win);
             switch (c)
             {
             case KEY_DOWN:
-                menu_driver(c_menu, REQ_DOWN_ITEM);
+                menu_driver(l_menu, REQ_DOWN_ITEM);
                 break;
             case KEY_UP:
-                menu_driver(c_menu, REQ_UP_ITEM);
+                menu_driver(l_menu, REQ_UP_ITEM);
                 break;
             case 10:
-                cur_item = current_item(c_menu);
-                if (strcmp(item_name(cur_item), "HUPCL") == 0 && (settings.c_cflag & HUPCL))
+                cur_item = current_item(l_menu);
+                if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_cflag & ISIG))
                 {
-                    mvwprintw(cflags_win, 5, max_x - 18, "OFF");
-                    settings.c_cflag &= ~HUPCL;
+                    mvwprintw(lflags_win, 5, max_x - 18, "OFF");
+                    settings.c_cflag &= ~ISIG;
                 }
-                else if (strcmp(item_name(cur_item), "HUPCL") == 0 && !(settings.c_cflag & HUPCL))
+                else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_cflag & ISIG))
                 {
-                    mvwprintw(cflags_win, 5, max_x - 18, "ON ");
-                    settings.c_cflag |= HUPCL;
+                    mvwprintw(lflags_win, 5, max_x - 18, "ON ");
+                    settings.c_cflag |= ISIG;
                 }
-                if (strcmp(item_name(cur_item), "CLOCAL") == 0 && (settings.c_cflag & CLOCAL))
+                if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_cflag & ECHO))
                 {
-                    mvwprintw(cflags_win, 6, max_x - 18, "OFF");
-                    settings.c_cflag &= ~CLOCAL;
+                    mvwprintw(lflags_win, 6, max_x - 18, "OFF");
+                    settings.c_cflag &= ~ECHO;
                 }
-                else if (strcmp(item_name(cur_item), "CLOCAL") == 0 && !(settings.c_cflag & CLOCAL))
+                else if (strcmp(item_name(cur_item), "ECHO") == 0 && !(settings.c_cflag & ECHO))
                 {
-                    mvwprintw(cflags_win, 6, max_x - 18, "ON ");
-                    settings.c_cflag |= CLOCAL;
+                    mvwprintw(lflags_win, 6, max_x - 18, "ON ");
+                    settings.c_cflag |= ECHO;
                 }
-                if (strcmp(item_name(cur_item), "CSTOPB") == 0 && (settings.c_cflag & CSTOPB))
+                if (strcmp(item_name(cur_item), "ECHOE") == 0 && (settings.c_cflag & ECHOE))
                 {
-                    mvwprintw(cflags_win, 7, max_x - 18, "OFF");
-                    settings.c_cflag &= ~CSTOPB;
+                    mvwprintw(lflags_win, 7, max_x - 18, "OFF");
+                    settings.c_cflag &= ~ECHOE;
                 }
-                else if (strcmp(item_name(cur_item), "CSTOPB") == 0 && !(settings.c_cflag & CSTOPB))
+                else if (strcmp(item_name(cur_item), "ECHOE") == 0 && !(settings.c_cflag & ECHOE))
                 {
-                    mvwprintw(cflags_win, 7, max_x - 18, "ON ");
-                    settings.c_cflag |= CSTOPB;
+                    mvwprintw(lflags_win, 7, max_x - 18, "ON ");
+                    settings.c_cflag |= ECHOE;
                 }
-                if (strcmp(item_name(cur_item), "CREAD") == 0 && (settings.c_cflag & CREAD))
+                if (strcmp(item_name(cur_item), "ECHOK") == 0 && (settings.c_cflag & ECHOK))
                 {
-                    mvwprintw(cflags_win, 8, max_x - 18, "OFF");
-                    settings.c_cflag &= ~CREAD;
+                    mvwprintw(lflags_win, 8, max_x - 18, "OFF");
+                    settings.c_cflag &= ~ECHOK;
                 }
-                else if (strcmp(item_name(cur_item), "CREAD") == 0 && !(settings.c_cflag & CREAD))
+                else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_cflag & ECHOK))
                 {
-                    mvwprintw(cflags_win, 8, max_x - 18, "ON ");
-                    settings.c_cflag |= CREAD;
-                }
-                if (strcmp(item_name(cur_item), "PARENB") == 0 && (settings.c_cflag & PARENB))
-                {
-                    mvwprintw(cflags_win, 9, max_x - 18, "OFF");
-                    settings.c_cflag &= ~PARENB;
-                }
-                else if (strcmp(item_name(cur_item), "PARENB") == 0 && !(settings.c_cflag & PARENB))
-                {
-                    mvwprintw(cflags_win, 9, max_x - 18, "ON ");
-                    settings.c_cflag |= PARENB;
+                    mvwprintw(lflags_win, 8, max_x - 18, "ON ");
+                    settings.c_cflag |= ECHOK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
@@ -420,7 +362,7 @@ int main()
     unpost_menu(my_menu);
     free_menu(my_menu);
     endwin();
-    tcsetattr(0, TCSANOW, &settings);
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
 
     return 0;
 }
