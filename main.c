@@ -360,7 +360,7 @@ int main()
                 }
                 else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_lflag & ECHOK))
                 {
-                    mvwprintw(lflags_win, , max_x - 18, "ON ");
+                    mvwprintw(lflags_win, 9, max_x - 18, "ON ");
                     settings.c_lflag |= ECHOK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
