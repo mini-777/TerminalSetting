@@ -7,14 +7,14 @@
 
 #include <unistd.h>
 
-char *choices[] = {
+char* choices[] = {
     "C_Iflags",
     "C_Lflags",
     "ALL FLIP & EXIT",
     "Save & Exit",
 };
 
-char *I_choices[] = {
+char* I_choices[] = {
     "IGNBRK",
     "BRKINT",
     "IGNPAR",
@@ -29,12 +29,12 @@ char *I_choices[] = {
     "Back",
 
 };
-char *O_choices[] = {
+char* O_choices[] = {
     "OLCUC",
     "Back",
 
 };
-char *L_choices[] = {
+char* L_choices[] = {
     "ISIG",
     "ICANON",
     "ECHO",
@@ -44,18 +44,18 @@ char *L_choices[] = {
 
 };
 
-MENU *create_menu(char **choices, int n_choices)
+MENU* create_menu(char** choices, int n_choices)
 {
-    ITEM **my_items = (ITEM **)calloc(n_choices + 1, sizeof(ITEM *));
+    ITEM** my_items = (ITEM**)calloc(n_choices + 1, sizeof(ITEM*));
 
     for (int i = 0; i < n_choices; ++i)
         my_items[i] = new_item(choices[i], "");
-    MENU *my_menu = new_menu((ITEM **)my_items);
+    MENU* my_menu = new_menu((ITEM**)my_items);
     return my_menu;
 }
-void create_window(WINDOW *flags_win, MENU *menu, int max_y, int max_x)
+void create_window(WINDOW* flags_win, MENU* menu, int max_y, int max_x)
 {
-    WINDOW *sub_win = derwin(flags_win, 15, 20, 5, 13);
+    WINDOW* sub_win = derwin(flags_win, 15, 20, 5, 13);
     keypad(flags_win, TRUE);
     set_menu_win(menu, flags_win);
     set_menu_sub(menu, sub_win);
@@ -88,20 +88,20 @@ int main()
 
     // 메뉴 구성 및 생성
     int n_choices, i_choices, o_choices, l_choices;
-    n_choices = sizeof(choices) / sizeof(char *);
-    i_choices = sizeof(I_choices) / sizeof(char *);
-    o_choices = sizeof(O_choices) / sizeof(char *);
-    l_choices = sizeof(L_choices) / sizeof(char *);
+    n_choices = sizeof(choices) / sizeof(char*);
+    i_choices = sizeof(I_choices) / sizeof(char*);
+    o_choices = sizeof(O_choices) / sizeof(char*);
+    l_choices = sizeof(L_choices) / sizeof(char*);
 
-    MENU *my_menu = create_menu(choices, n_choices);
-    MENU *i_menu = create_menu(I_choices, i_choices);
-    MENU *o_menu = create_menu(O_choices, o_choices);
-    MENU *l_menu = create_menu(L_choices, l_choices);
+    MENU* my_menu = create_menu(choices, n_choices);
+    MENU* i_menu = create_menu(I_choices, i_choices);
+    MENU* o_menu = create_menu(O_choices, o_choices);
+    MENU* l_menu = create_menu(L_choices, l_choices);
 
     int max_y, max_x;
     getmaxyx(stdscr, max_y, max_x);
-    WINDOW *menu_win = newwin(max_y - 3, max_x - 4, 1, 1);
-    WINDOW *sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
+    WINDOW* menu_win = newwin(max_y - 3, max_x - 4, 1, 1);
+    WINDOW* sub_win = derwin(menu_win, 8, 20, max_y / 2 - 6, max_x / 2 - 9);
     // 윈도우 구성
     keypad(menu_win, TRUE);
     set_menu_win(my_menu, menu_win);
@@ -115,9 +115,9 @@ int main()
     mvwprintw(menu_win, 0, max_x / 2 - 10, "TERMINAL SETTING");
     mvwprintw(menu_win, max_y - 4, max_x - 15, "F1 to Exit");
 
-    WINDOW *iflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
+    WINDOW* iflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
 
-    WINDOW *lflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
+    WINDOW* lflags_win = newwin(max_y - 3, max_x - 4, 1, 1);
     create_window(iflags_win, i_menu, max_y, max_x);
     create_window(lflags_win, l_menu, max_y, max_x);
 
@@ -149,7 +149,7 @@ int main()
 
     int c;
     int m = 0, i = 0, o = 0, l = 0;
-    ITEM *cur_item;
+    ITEM* cur_item;
     while (c != KEY_F(1) && l == 0)
     {
         if (m == 0 && i == 0)
@@ -211,121 +211,166 @@ int main()
                 cur_item = current_item(i_menu);
                 if (strcmp(item_name(cur_item), "IGNBRK") == 0 && (settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, 5, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNBRK: Ignore BREAK condition on input                       ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~IGNBRK;
                 }
                 else if (strcmp(item_name(cur_item), "IGNBRK") == 0 && !(settings.c_iflag & IGNBRK))
                 {
-                    mvwprintw(iflags_win, 4, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, 5, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNBRK: Ignore BREAK condition on input                       ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= IGNBRK;
                 }
                 if (strcmp(item_name(cur_item), "BRKINT") == 0 && (settings.c_iflag & BRKINT))
                 {
                     mvwprintw(iflags_win, 6, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "BRKINT: If IGNBRK is set, a BREAK is ignored                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~BRKINT;
                 }
                 else if (strcmp(item_name(cur_item), "BRKINT") == 0 && !(settings.c_iflag & BRKINT))
                 {
                     mvwprintw(iflags_win, 6, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "BRKINT: If IGNBRK is set, a BREAK is ignored                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= BRKINT;
                 }
                 if (strcmp(item_name(cur_item), "IGNPAR") == 0 && (settings.c_iflag & IGNPAR))
                 {
                     mvwprintw(iflags_win, 7, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNPAR: Ignore framing errors and parity errors               ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~IGNPAR;
                 }
                 else if (strcmp(item_name(cur_item), "IGNPAR") == 0 && !(settings.c_iflag & IGNPAR))
                 {
                     mvwprintw(iflags_win, 7, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNPAR: Ignore framing errors and parity errors               ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= IGNPAR;
                 }
                 if (strcmp(item_name(cur_item), "PARMRK") == 0 && (settings.c_iflag & PARMRK))
                 {
                     mvwprintw(iflags_win, 8, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "PARMRK: Input bytes with parity or framing errors are marked ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "Need INPCK : ON / IGNPAR : OFF          ");
                     settings.c_iflag &= ~PARMRK;
                 }
                 else if (strcmp(item_name(cur_item), "PARMRK") == 0 && !(settings.c_iflag & PARMRK))
                 {
                     mvwprintw(iflags_win, 8, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "PARMRK: Input bytes with parity or framing errors are marked ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "Need INPCK : ON / IGNPAR : OFF          ");
                     settings.c_iflag |= PARMRK;
                 }
                 if (strcmp(item_name(cur_item), "INPCK") == 0 && (settings.c_iflag & INPCK))
                 {
                     mvwprintw(iflags_win, 9, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "INPCK: Enable input parity checking                          ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~INPCK;
                 }
                 else if (strcmp(item_name(cur_item), "INPCK") == 0 && !(settings.c_iflag & INPCK))
                 {
                     mvwprintw(iflags_win, 9, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "INPCK: Enable input parity checking                          ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= INPCK;
                 }
                 if (strcmp(item_name(cur_item), "ISTRIP") == 0 && (settings.c_iflag & ISTRIP))
                 {
                     mvwprintw(iflags_win, 10, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "ISTRIP: Strip off eighth bit                                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~ISTRIP;
                 }
                 else if (strcmp(item_name(cur_item), "ISTRIP") == 0 && !(settings.c_iflag & ISTRIP))
                 {
                     mvwprintw(iflags_win, 10, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "ISTRIP: Strip off eighth bit                                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= ISTRIP;
                 }
                 if (strcmp(item_name(cur_item), "INLCR") == 0 && (settings.c_iflag & INLCR))
                 {
                     mvwprintw(iflags_win, 11, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "INLCR: Translate NL to CR on input                              ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~INLCR;
                 }
                 else if (strcmp(item_name(cur_item), "INLCR") == 0 && !(settings.c_iflag & INLCR))
                 {
                     mvwprintw(iflags_win, 11, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "INLCR: Translate NL to CR on input                              ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= INLCR;
                 }
 
                 if (strcmp(item_name(cur_item), "IGNCR") == 0 && (settings.c_iflag & IGNCR))
                 {
                     mvwprintw(iflags_win, 12, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNCR: Ignore carriage return on input                       ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~IGNCR;
                 }
                 else if (strcmp(item_name(cur_item), "IGNCR") == 0 && !(settings.c_iflag & IGNCR))
                 {
                     mvwprintw(iflags_win, 12, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IGNCR: Ignore carriage return on input                       ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= IGNCR;
                 }
 
                 if (strcmp(item_name(cur_item), "ICRNL") == 0 && (settings.c_iflag & ICRNL))
                 {
                     mvwprintw(iflags_win, 13, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "ICRNL: Translate carriage return to newline on input            ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "Need IGNCR : OFF                            ");
                     settings.c_iflag &= ~ICRNL;
                 }
                 else if (strcmp(item_name(cur_item), "ICRNL") == 0 && !(settings.c_iflag & ICRNL))
                 {
                     mvwprintw(iflags_win, 13, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "ICRNL: Translate carriage return to newline on input            ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "Need IGNCR : OFF                            ");
                     settings.c_iflag |= ICRNL;
                 }
 
                 if (strcmp(item_name(cur_item), "IXON") == 0 && (settings.c_iflag & IXON))
                 {
                     mvwprintw(iflags_win, 14, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IXON: Enable XON/XOFF flow control on output                    ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~IXON;
                 }
                 else if (strcmp(item_name(cur_item), "IXON") == 0 && !(settings.c_iflag & IXON))
                 {
                     mvwprintw(iflags_win, 14, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IXON: Enable XON/XOFF flow control on output                    ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= IXON;
                 }
                 if (strcmp(item_name(cur_item), "IXOFF") == 0 && (settings.c_iflag & IXOFF))
                 {
                     mvwprintw(iflags_win, 15, max_x - 18, "OFF");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IXOFF: Enable XON/XOFF flow control on input                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag &= ~IXOFF;
                 }
                 else if (strcmp(item_name(cur_item), "IXOFF") == 0 && !(settings.c_iflag & IXOFF))
                 {
                     mvwprintw(iflags_win, 15, max_x - 18, "ON ");
+                    mvwprintw(iflags_win, max_y - 8, 5, "IXOFF: Enable XON/XOFF flow control on input                     ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     settings.c_iflag |= IXOFF;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
-
+                    mvwprintw(iflags_win, max_y - 8, 5, "                                                                 ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     break;
                 }
                 break;
@@ -350,57 +395,78 @@ int main()
                 if (strcmp(item_name(cur_item), "ISIG") == 0 && (settings.c_lflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ISIG: Generate the corresponding signal                                               ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need INTR, QUIT, SUSP, or DSUSP are received ");
                     settings.c_lflag &= ~ISIG;
                 }
                 else if (strcmp(item_name(cur_item), "ISIG") == 0 && !(settings.c_lflag & ISIG))
                 {
                     mvwprintw(lflags_win, 5, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ISIG: Generate the corresponding signal                                               ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need INTR, QUIT, SUSP, or DSUSP are received ");
                     settings.c_lflag |= ISIG;
                 }
                 if (strcmp(item_name(cur_item), "ICANON") == 0 && (settings.c_lflag & ICANON))
                 {
                     mvwprintw(lflags_win, 6, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ICANON: Enable canonical mode (described below)                                       ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "                                             ");
                     settings.c_lflag &= ~ICANON;
                 }
                 else if (strcmp(item_name(cur_item), "ICANON") == 0 && !(settings.c_lflag & ICANON))
                 {
                     mvwprintw(lflags_win, 6, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ICANON: Enable canonical mode (described below)                                       ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "                                             ");
                     settings.c_lflag |= ICANON;
                 }
                 if (strcmp(item_name(cur_item), "ECHO") == 0 && (settings.c_lflag & ECHO))
                 {
                     mvwprintw(lflags_win, 7, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHO: Echo input characters                                                           ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "                                             ");
                     settings.c_lflag &= ~ECHO;
                 }
                 else if (strcmp(item_name(cur_item), "ECHO") == 0 && !(settings.c_lflag & ECHO))
                 {
                     mvwprintw(lflags_win, 7, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHO: Echo input characters                                                           ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "                                             ");
                     settings.c_lflag |= ECHO;
                 }
                 if (strcmp(item_name(cur_item), "ECHOE") == 0 && (settings.c_lflag & ECHOE))
                 {
                     mvwprintw(lflags_win, 8, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHOE: ERASE; erases the preceding input character/ WERASE; erases the preceding word ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need ICANON : ON                             ");
                     settings.c_lflag &= ~ECHOE;
                 }
                 else if (strcmp(item_name(cur_item), "ECHOE") == 0 && !(settings.c_lflag & ECHOE))
                 {
                     mvwprintw(lflags_win, 8, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHOE: ERASE; erases the preceding input character/ WERASE; erases the preceding word ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need ICANON : ON                             ");
                     settings.c_lflag |= ECHOE;
                 }
                 if (strcmp(item_name(cur_item), "ECHOK") == 0 && (settings.c_lflag & ECHOK))
                 {
                     mvwprintw(lflags_win, 9, max_x - 18, "OFF");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHOK: KILL character erases the current line                                         ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need ICANON : ON                             ");
                     settings.c_lflag &= ~ECHOK;
                 }
                 else if (strcmp(item_name(cur_item), "ECHOK") == 0 && !(settings.c_lflag & ECHOK))
                 {
                     mvwprintw(lflags_win, 9, max_x - 18, "ON ");
+                    mvwprintw(lflags_win, max_y - 8, 5, "ECHOK: KILL character erases the current line                                         ");
+                    mvwprintw(lflags_win, max_y - 7, 5, "Need ICANON : ON                             ");
                     settings.c_lflag |= ECHOK;
                 }
                 if (strcmp(item_name(cur_item), "Back") == 0)
                 {
                     m = 0, i = 0;
-
+                    mvwprintw(iflags_win, max_y - 8, 5, "                                                                       ");
+                    mvwprintw(iflags_win, max_y - 7, 5, "                                            ");
                     break;
                 }
                 break;
